@@ -1,0 +1,414 @@
+<sdf version='1.7'>
+  <world name='default'>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         REAL-WORLD ENVIRONMENT — tunnel_100m_realworld.world
+         Uses DARPA SubT Tunnel Tile 5 geometry (5 m wide × 5 m tall × 20 m per tile)
+         5 tiles tiled along X-axis → 100 m straight corridor (narrower than training)
+         ─────────────────────────────────────────────────────────────────
+         Corridor: ±2.5 m lateral (5 m total width, vs 7 m training world)
+         Turn point: 95 m   Altitude: 0–5 m
+         Dynamic obstacles : 10 walking people (same waypoints as testing world)
+         Static obstacles  : 10 mine-realistic objects (debris, crates, barrels)
+         Domain gap tested : narrower corridor, different geometry, mine lighting
+         ═══════════════════════════════════════════════════════════════════ -->
+
+    <!-- ─── LIGHTING (dim mine ambient — realistic subterranean) ─── -->
+    <light name='overhead_sun' type='directional'>
+      <cast_shadows>0</cast_shadows>
+      <pose>50 0 10 0 -0 0</pose>
+      <diffuse>0.35 0.32 0.28 1</diffuse>
+      <specular>0.05 0.05 0.05 1</specular>
+      <attenuation><range>200</range><constant>0.9</constant><linear>0.01</linear><quadratic>0.001</quadratic></attenuation>
+      <direction>0 0 -1</direction>
+    </light>
+    <light name='strip_light_1' type='point'>
+      <pose>10 0 4.5 0 0 0</pose>
+      <diffuse>0.9 0.9 0.8 1</diffuse><specular>0.1 0.1 0.1 1</specular>
+      <attenuation><range>25</range><constant>0.5</constant><linear>0.05</linear><quadratic>0.01</quadratic></attenuation>
+    </light>
+    <light name='strip_light_2' type='point'>
+      <pose>30 0 4.5 0 0 0</pose>
+      <diffuse>0.9 0.9 0.8 1</diffuse><specular>0.1 0.1 0.1 1</specular>
+      <attenuation><range>25</range><constant>0.5</constant><linear>0.05</linear><quadratic>0.01</quadratic></attenuation>
+    </light>
+    <light name='strip_light_3' type='point'>
+      <pose>50 0 4.5 0 0 0</pose>
+      <diffuse>0.9 0.9 0.8 1</diffuse><specular>0.1 0.1 0.1 1</specular>
+      <attenuation><range>25</range><constant>0.5</constant><linear>0.05</linear><quadratic>0.01</quadratic></attenuation>
+    </light>
+    <light name='strip_light_4' type='point'>
+      <pose>70 0 4.5 0 0 0</pose>
+      <diffuse>0.9 0.9 0.8 1</diffuse><specular>0.1 0.1 0.1 1</specular>
+      <attenuation><range>25</range><constant>0.5</constant><linear>0.05</linear><quadratic>0.01</quadratic></attenuation>
+    </light>
+    <light name='strip_light_5' type='point'>
+      <pose>90 0 4.5 0 0 0</pose>
+      <diffuse>0.9 0.9 0.8 1</diffuse><specular>0.1 0.1 0.1 1</specular>
+      <attenuation><range>25</range><constant>0.5</constant><linear>0.05</linear><quadratic>0.01</quadratic></attenuation>
+    </light>
+
+    <gravity>0 0 -9.8</gravity>
+    <magnetic_field>6e-06 2.3e-05 -4.2e-05</magnetic_field>
+    <atmosphere type='adiabatic'/>
+    <physics type='ode'>
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1</real_time_factor>
+      <real_time_update_rate>1000</real_time_update_rate>
+    </physics>
+    <scene>
+      <ambient>0.25 0.23 0.20 1</ambient>
+      <background>0.05 0.05 0.05 1</background>
+      <shadows>1</shadows>
+    </scene>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         DYNAMIC OBSTACLES — 10 walking people
+         UNCHANGED waypoints from testing world (tunnel_100m_dynamic_20.world)
+         Capped at ±2.0 m Y to stay within 5 m corridor
+         ═══════════════════════════════════════════════════════════════════ -->
+
+    <model name="person1_0.5_0.5_1.8">
+      <pose>0 0 0 0 0 0</pose>
+      <link name="link">
+        <inertial><mass>75.0</mass><inertia><ixx>16.75</ixx><ixy>0</ixy><ixz>0</ixz><iyy>16.75</iyy><iyz>0</iyz><izz>1.5</izz></inertia></inertial>
+        <collision name="body"><pose>0 0 0.9 0 0 0</pose><geometry><cylinder><radius>0.18</radius><length>1.6</length></cylinder></geometry><surface><contact><ode><soft_cfm>0</soft_cfm><soft_erp>0.2</soft_erp></ode></contact><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface></collision>
+        <collision name="bottom"><pose>0 0 0.01 0 0 1.57</pose><geometry><box><size>0.35 0.75 0.02</size></box></geometry></collision>
+        <visual name="visual"><pose>0 0 -0.02 0 0 1.57</pose><geometry><mesh><uri>model://person/meshes/walking.dae</uri></mesh></geometry></visual>
+      </link>
+      <plugin name="obstacle_motion" filename="libobstaclePathPlugin.so">
+        <loop>0</loop><velocity>0.6</velocity><angular_velocity>0.8</angular_velocity>
+        <path><waypoint>5.0 -2.0 0.0</waypoint><waypoint>10.0 -2.0 0.0</waypoint></path>
+      </plugin>
+    </model>
+
+    <model name="person2_0.5_0.5_1.8">
+      <pose>0 0 0 0 0 0</pose>
+      <link name="link">
+        <inertial><mass>75.0</mass><inertia><ixx>16.75</ixx><ixy>0</ixy><ixz>0</ixz><iyy>16.75</iyy><iyz>0</iyz><izz>1.5</izz></inertia></inertial>
+        <collision name="body"><pose>0 0 0.9 0 0 0</pose><geometry><cylinder><radius>0.18</radius><length>1.6</length></cylinder></geometry><surface><contact><ode><soft_cfm>0</soft_cfm><soft_erp>0.2</soft_erp></ode></contact><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface></collision>
+        <collision name="bottom"><pose>0 0 0.01 0 0 1.57</pose><geometry><box><size>0.35 0.75 0.02</size></box></geometry></collision>
+        <visual name="visual"><pose>0 0 -0.02 0 0 1.57</pose><geometry><mesh><uri>model://person/meshes/walking.dae</uri></mesh></geometry></visual>
+      </link>
+      <plugin name="obstacle_motion" filename="libobstaclePathPlugin.so">
+        <loop>0</loop><velocity>0.5</velocity><angular_velocity>0.8</angular_velocity>
+        <path><waypoint>15.0 2.0 0.0</waypoint><waypoint>20.0 2.0 0.0</waypoint></path>
+      </plugin>
+    </model>
+
+    <model name="person3_0.5_0.5_1.8">
+      <pose>0 0 0 0 0 0</pose>
+      <link name="link">
+        <inertial><mass>75.0</mass><inertia><ixx>16.75</ixx><ixy>0</ixy><ixz>0</ixz><iyy>16.75</iyy><iyz>0</iyz><izz>1.5</izz></inertia></inertial>
+        <collision name="body"><pose>0 0 0.9 0 0 0</pose><geometry><cylinder><radius>0.18</radius><length>1.6</length></cylinder></geometry><surface><contact><ode><soft_cfm>0</soft_cfm><soft_erp>0.2</soft_erp></ode></contact><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface></collision>
+        <collision name="bottom"><pose>0 0 0.01 0 0 1.57</pose><geometry><box><size>0.35 0.75 0.02</size></box></geometry></collision>
+        <visual name="visual"><pose>0 0 -0.02 0 0 1.57</pose><geometry><mesh><uri>model://person/meshes/walking.dae</uri></mesh></geometry></visual>
+      </link>
+      <plugin name="obstacle_motion" filename="libobstaclePathPlugin.so">
+        <loop>0</loop><velocity>0.7</velocity><angular_velocity>0.8</angular_velocity>
+        <path><waypoint>25.0 1.5 0.0</waypoint><waypoint>25.0 -1.5 0.0</waypoint></path>
+      </plugin>
+    </model>
+
+    <model name="person4_0.5_0.5_1.8">
+      <pose>0 0 0 0 0 0</pose>
+      <link name="link">
+        <inertial><mass>75.0</mass><inertia><ixx>16.75</ixx><ixy>0</ixy><ixz>0</ixz><iyy>16.75</iyy><iyz>0</iyz><izz>1.5</izz></inertia></inertial>
+        <collision name="body"><pose>0 0 0.9 0 0 0</pose><geometry><cylinder><radius>0.18</radius><length>1.6</length></cylinder></geometry><surface><contact><ode><soft_cfm>0</soft_cfm><soft_erp>0.2</soft_erp></ode></contact><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface></collision>
+        <collision name="bottom"><pose>0 0 0.01 0 0 1.57</pose><geometry><box><size>0.35 0.75 0.02</size></box></geometry></collision>
+        <visual name="visual"><pose>0 0 -0.02 0 0 1.57</pose><geometry><mesh><uri>model://person/meshes/walking.dae</uri></mesh></geometry></visual>
+      </link>
+      <plugin name="obstacle_motion" filename="libobstaclePathPlugin.so">
+        <loop>0</loop><velocity>0.5</velocity><angular_velocity>0.8</angular_velocity>
+        <path><waypoint>35.0 -2.0 0.0</waypoint><waypoint>40.0 -2.0 0.0</waypoint></path>
+      </plugin>
+    </model>
+
+    <model name="person5_0.5_0.5_1.8">
+      <pose>0 0 0 0 0 0</pose>
+      <link name="link">
+        <inertial><mass>75.0</mass><inertia><ixx>16.75</ixx><ixy>0</ixy><ixz>0</ixz><iyy>16.75</iyy><iyz>0</iyz><izz>1.5</izz></inertia></inertial>
+        <collision name="body"><pose>0 0 0.9 0 0 0</pose><geometry><cylinder><radius>0.18</radius><length>1.6</length></cylinder></geometry><surface><contact><ode><soft_cfm>0</soft_cfm><soft_erp>0.2</soft_erp></ode></contact><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface></collision>
+        <collision name="bottom"><pose>0 0 0.01 0 0 1.57</pose><geometry><box><size>0.35 0.75 0.02</size></box></geometry></collision>
+        <visual name="visual"><pose>0 0 -0.02 0 0 1.57</pose><geometry><mesh><uri>model://person/meshes/walking.dae</uri></mesh></geometry></visual>
+      </link>
+      <plugin name="obstacle_motion" filename="libobstaclePathPlugin.so">
+        <loop>0</loop><velocity>0.6</velocity><angular_velocity>0.8</angular_velocity>
+        <path><waypoint>48.0 2.0 0.0</waypoint><waypoint>53.0 2.0 0.0</waypoint></path>
+      </plugin>
+    </model>
+
+    <model name="person6_0.5_0.5_1.8">
+      <pose>0 0 0 0 0 0</pose>
+      <link name="link">
+        <inertial><mass>75.0</mass><inertia><ixx>16.75</ixx><ixy>0</ixy><ixz>0</ixz><iyy>16.75</iyy><iyz>0</iyz><izz>1.5</izz></inertia></inertial>
+        <collision name="body"><pose>0 0 0.9 0 0 0</pose><geometry><cylinder><radius>0.18</radius><length>1.6</length></cylinder></geometry><surface><contact><ode><soft_cfm>0</soft_cfm><soft_erp>0.2</soft_erp></ode></contact><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface></collision>
+        <collision name="bottom"><pose>0 0 0.01 0 0 1.57</pose><geometry><box><size>0.35 0.75 0.02</size></box></geometry></collision>
+        <visual name="visual"><pose>0 0 -0.02 0 0 1.57</pose><geometry><mesh><uri>model://person/meshes/walking.dae</uri></mesh></geometry></visual>
+      </link>
+      <plugin name="obstacle_motion" filename="libobstaclePathPlugin.so">
+        <loop>0</loop><velocity>0.5</velocity><angular_velocity>0.8</angular_velocity>
+        <path><waypoint>58.0 -1.0 0.0</waypoint><waypoint>63.0 -1.0 0.0</waypoint></path>
+      </plugin>
+    </model>
+
+    <model name="person7_0.5_0.5_1.8">
+      <pose>0 0 0 0 0 0</pose>
+      <link name="link">
+        <inertial><mass>75.0</mass><inertia><ixx>16.75</ixx><ixy>0</ixy><ixz>0</ixz><iyy>16.75</iyy><iyz>0</iyz><izz>1.5</izz></inertia></inertial>
+        <collision name="body"><pose>0 0 0.9 0 0 0</pose><geometry><cylinder><radius>0.18</radius><length>1.6</length></cylinder></geometry><surface><contact><ode><soft_cfm>0</soft_cfm><soft_erp>0.2</soft_erp></ode></contact><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface></collision>
+        <collision name="bottom"><pose>0 0 0.01 0 0 1.57</pose><geometry><box><size>0.35 0.75 0.02</size></box></geometry></collision>
+        <visual name="visual"><pose>0 0 -0.02 0 0 1.57</pose><geometry><mesh><uri>model://person/meshes/walking.dae</uri></mesh></geometry></visual>
+      </link>
+      <plugin name="obstacle_motion" filename="libobstaclePathPlugin.so">
+        <loop>0</loop><velocity>0.7</velocity><angular_velocity>0.8</angular_velocity>
+        <path><waypoint>68.0 2.0 0.0</waypoint><waypoint>73.0 2.0 0.0</waypoint></path>
+      </plugin>
+    </model>
+
+    <model name="person8_0.5_0.5_1.8">
+      <pose>0 0 0 0 0 0</pose>
+      <link name="link">
+        <inertial><mass>75.0</mass><inertia><ixx>16.75</ixx><ixy>0</ixy><ixz>0</ixz><iyy>16.75</iyy><iyz>0</iyz><izz>1.5</izz></inertia></inertial>
+        <collision name="body"><pose>0 0 0.9 0 0 0</pose><geometry><cylinder><radius>0.18</radius><length>1.6</length></cylinder></geometry><surface><contact><ode><soft_cfm>0</soft_cfm><soft_erp>0.2</soft_erp></ode></contact><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface></collision>
+        <collision name="bottom"><pose>0 0 0.01 0 0 1.57</pose><geometry><box><size>0.35 0.75 0.02</size></box></geometry></collision>
+        <visual name="visual"><pose>0 0 -0.02 0 0 1.57</pose><geometry><mesh><uri>model://person/meshes/walking.dae</uri></mesh></geometry></visual>
+      </link>
+      <plugin name="obstacle_motion" filename="libobstaclePathPlugin.so">
+        <loop>0</loop><velocity>0.5</velocity><angular_velocity>0.8</angular_velocity>
+        <path><waypoint>78.0 -2.0 0.0</waypoint><waypoint>82.0 0.0 0.0</waypoint></path>
+      </plugin>
+    </model>
+
+    <model name="person9_0.5_0.5_1.8">
+      <pose>0 0 0 0 0 0</pose>
+      <link name="link">
+        <inertial><mass>75.0</mass><inertia><ixx>16.75</ixx><ixy>0</ixy><ixz>0</ixz><iyy>16.75</iyy><iyz>0</iyz><izz>1.5</izz></inertia></inertial>
+        <collision name="body"><pose>0 0 0.9 0 0 0</pose><geometry><cylinder><radius>0.18</radius><length>1.6</length></cylinder></geometry><surface><contact><ode><soft_cfm>0</soft_cfm><soft_erp>0.2</soft_erp></ode></contact><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface></collision>
+        <collision name="bottom"><pose>0 0 0.01 0 0 1.57</pose><geometry><box><size>0.35 0.75 0.02</size></box></geometry></collision>
+        <visual name="visual"><pose>0 0 -0.02 0 0 1.57</pose><geometry><mesh><uri>model://person/meshes/walking.dae</uri></mesh></geometry></visual>
+      </link>
+      <plugin name="obstacle_motion" filename="libobstaclePathPlugin.so">
+        <loop>0</loop><velocity>0.5</velocity><angular_velocity>0.8</angular_velocity>
+        <path><waypoint>85.0 1.0 0.0</waypoint><waypoint>90.0 1.0 0.0</waypoint></path>
+      </plugin>
+    </model>
+
+    <model name="person10_0.5_0.5_1.8">
+      <pose>0 0 0 0 0 0</pose>
+      <link name="link">
+        <inertial><mass>75.0</mass><inertia><ixx>16.75</ixx><ixy>0</ixy><ixz>0</ixz><iyy>16.75</iyy><iyz>0</iyz><izz>1.5</izz></inertia></inertial>
+        <collision name="body"><pose>0 0 0.9 0 0 0</pose><geometry><cylinder><radius>0.18</radius><length>1.6</length></cylinder></geometry><surface><contact><ode><soft_cfm>0</soft_cfm><soft_erp>0.2</soft_erp></ode></contact><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface></collision>
+        <collision name="bottom"><pose>0 0 0.01 0 0 1.57</pose><geometry><box><size>0.35 0.75 0.02</size></box></geometry></collision>
+        <visual name="visual"><pose>0 0 -0.02 0 0 1.57</pose><geometry><mesh><uri>model://person/meshes/walking.dae</uri></mesh></geometry></visual>
+      </link>
+      <plugin name="obstacle_motion" filename="libobstaclePathPlugin.so">
+        <loop>0</loop><velocity>0.6</velocity><angular_velocity>0.8</angular_velocity>
+        <path><waypoint>92.0 -2.0 0.0</waypoint><waypoint>95.0 0.0 0.0</waypoint></path>
+      </plugin>
+    </model>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         TUNNEL STRUCTURE — 5× Tunnel Tile 5 (DARPA SubT Straight Tile)
+         Each tile: 5 m wide × 5 m tall × 20 m long
+         Rotated 90° around Z so 20 m length aligns with X (forward) axis
+         Tile centers at X=10, 30, 50, 70, 90
+         ═══════════════════════════════════════════════════════════════════ -->
+
+    <include>
+      <uri>model://tunnel_tile_5</uri>
+      <name>tunnel_tile_1</name>
+      <pose>10 0 0 0 0 1.5708</pose>
+    </include>
+
+    <include>
+      <uri>model://tunnel_tile_5</uri>
+      <name>tunnel_tile_2</name>
+      <pose>30 0 0 0 0 1.5708</pose>
+    </include>
+
+    <include>
+      <uri>model://tunnel_tile_5</uri>
+      <name>tunnel_tile_3</name>
+      <pose>50 0 0 0 0 1.5708</pose>
+    </include>
+
+    <include>
+      <uri>model://tunnel_tile_5</uri>
+      <name>tunnel_tile_4</name>
+      <pose>70 0 0 0 0 1.5708</pose>
+    </include>
+
+    <include>
+      <uri>model://tunnel_tile_5</uri>
+      <name>tunnel_tile_5</name>
+      <pose>90 0 0 0 0 1.5708</pose>
+    </include>
+
+    <!-- End wall (blocks X=100 m) -->
+    <model name='tunnel_end_wall'>
+      <pose>100 0 0 0 0 0</pose>
+      <static>true</static>
+      <link name='Wall_0'>
+        <collision name='Wall_0_Collision'>
+          <geometry><box><size>5.5 0.15 5.5</size></box></geometry>
+          <pose>0 0 2.75 0 0 0</pose>
+        </collision>
+        <visual name='Wall_0_Visual'>
+          <pose>0 0 2.75 0 0 0</pose>
+          <geometry><box><size>5.5 0.15 5.5</size></box></geometry>
+          <material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/DarkGrey</name></script></material>
+        </visual>
+        <pose>0 0 0 0 0 1.5708</pose>
+      </link>
+    </model>
+
+    <!-- Ground plane (collision only — tile mesh covers visual floor) -->
+    <model name='ground_plane'>
+      <static>true</static>
+      <link name='link'>
+        <collision name='collision'>
+          <pose>50 0 -0.01 0 0 0</pose>
+          <geometry><box><size>110 6 0.02</size></box></geometry>
+        </collision>
+      </link>
+    </model>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         STATIC OBSTACLES — 10 mine-realistic obstacles
+         Mixed: debris piles, equipment crates, barrels, support beams
+         All within |Y| ≤ 2.0 m (safe for 5 m wide corridor)
+         Distribution mirrors testing world every ~10 m from X=8 to X=93
+         ═══════════════════════════════════════════════════════════════════ -->
+
+    <!-- debris_01  X=8,  Y=+1.5   low rubble pile -->
+    <model name='debris_01'>
+      <pose>8.0 1.5 0 0 0 0</pose>
+      <static>true</static>
+      <link name='l'>
+        <collision name='c'><geometry><box><size>1.2 1.0 0.7</size></box></geometry><pose>0 0 0.35 0 0 0</pose><max_contacts>10</max_contacts></collision>
+        <visual name='v'><pose>0 0 0.35 0 0 0</pose><geometry><box><size>1.2 1.0 0.7</size></box></geometry>
+          <material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Rocky</name></script><ambient>0.45 0.38 0.30 1</ambient></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- crate_03  X=18, Y=-0.8   equipment crate -->
+    <model name='crate_03'>
+      <pose>18.0 -0.8 0 0 0 0</pose>
+      <static>true</static>
+      <link name='l'>
+        <collision name='c'><geometry><box><size>1.0 1.0 1.5</size></box></geometry><pose>0 0 0.75 0 0 0</pose><max_contacts>10</max_contacts></collision>
+        <visual name='v'><pose>0 0 0.75 0 0 0</pose><geometry><box><size>1.0 1.0 1.5</size></box></geometry>
+          <material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/WoodPallet</name></script><ambient>0.55 0.45 0.25 1</ambient></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- barrel_05  X=28, Y=+1.8   oil drum -->
+    <model name='barrel_05'>
+      <pose>28.0 1.8 0 0 0 0</pose>
+      <static>true</static>
+      <link name='l'>
+        <collision name='c'><geometry><box><size>0.7 0.7 1.0</size></box></geometry><pose>0 0 0.5 0 0 0</pose><max_contacts>10</max_contacts></collision>
+        <visual name='v'><pose>0 0 0.5 0 0 0</pose><geometry><cylinder><radius>0.35</radius><length>1.0</length></cylinder></geometry>
+          <material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/FlatBlack</name></script><ambient>0.2 0.2 0.2 1</ambient></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- equipment_07  X=35, Y=-1.5  heavy equipment box -->
+    <model name='equipment_07'>
+      <pose>35.0 -1.5 0 0 0 0</pose>
+      <static>true</static>
+      <link name='l'>
+        <collision name='c'><geometry><box><size>1.5 0.8 1.8</size></box></geometry><pose>0 0 0.9 0 0 0</pose><max_contacts>10</max_contacts></collision>
+        <visual name='v'><pose>0 0 0.9 0 0 0</pose><geometry><box><size>1.5 0.8 1.8</size></box></geometry>
+          <material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.5 0.5 0.5 1</ambient></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- rubble_09  X=43, Y=+2.0   rubble pile against left wall -->
+    <model name='rubble_09'>
+      <pose>43.0 2.0 0 0 0 0</pose>
+      <static>true</static>
+      <link name='l'>
+        <collision name='c'><geometry><box><size>1.5 0.8 1.2</size></box></geometry><pose>0 0 0.6 0 0 0</pose><max_contacts>10</max_contacts></collision>
+        <visual name='v'><pose>0 0 0.6 0 0 0</pose><geometry><box><size>1.5 0.8 1.2</size></box></geometry>
+          <material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Rocky</name></script><ambient>0.40 0.35 0.28 1</ambient></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- crate_11  X=53, Y=-1.8   crate near right wall -->
+    <model name='crate_11'>
+      <pose>53.0 -1.8 0 0 0 0</pose>
+      <static>true</static>
+      <link name='l'>
+        <collision name='c'><geometry><box><size>1.2 1.0 1.5</size></box></geometry><pose>0 0 0.75 0 0 0</pose><max_contacts>10</max_contacts></collision>
+        <visual name='v'><pose>0 0 0.75 0 0 0</pose><geometry><box><size>1.2 1.0 1.5</size></box></geometry>
+          <material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/WoodPallet</name></script><ambient>0.55 0.45 0.25 1</ambient></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- barrel_13  X=62, Y=+0.5   centre barrel (most obstructing) -->
+    <model name='barrel_13'>
+      <pose>62.0 0.5 0 0 0 0</pose>
+      <static>true</static>
+      <link name='l'>
+        <collision name='c'><geometry><box><size>0.7 0.7 1.0</size></box></geometry><pose>0 0 0.5 0 0 0</pose><max_contacts>10</max_contacts></collision>
+        <visual name='v'><pose>0 0 0.5 0 0 0</pose><geometry><cylinder><radius>0.35</radius><length>1.0</length></cylinder></geometry>
+          <material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/FlatBlack</name></script><ambient>0.2 0.2 0.2 1</ambient></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- equipment_15  X=73, Y=-1.5   equipment on right side -->
+    <model name='equipment_15'>
+      <pose>73.0 -1.5 0 0 0 0</pose>
+      <static>true</static>
+      <link name='l'>
+        <collision name='c'><geometry><box><size>1.5 0.8 1.8</size></box></geometry><pose>0 0 0.9 0 0 0</pose><max_contacts>10</max_contacts></collision>
+        <visual name='v'><pose>0 0 0.9 0 0 0</pose><geometry><box><size>1.5 0.8 1.8</size></box></geometry>
+          <material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.5 0.5 0.5 1</ambient></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- crate_17  X=84, Y=+1.0   crate near centre-left -->
+    <model name='crate_17'>
+      <pose>84.0 1.0 0 0 0 0</pose>
+      <static>true</static>
+      <link name='l'>
+        <collision name='c'><geometry><box><size>1.0 1.0 1.5</size></box></geometry><pose>0 0 0.75 0 0 0</pose><max_contacts>10</max_contacts></collision>
+        <visual name='v'><pose>0 0 0.75 0 0 0</pose><geometry><box><size>1.0 1.0 1.5</size></box></geometry>
+          <material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/WoodPallet</name></script><ambient>0.55 0.45 0.25 1</ambient></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- barrel_19  X=93, Y=-1.0   near turn-point (same slot as lbox_20 in testing) -->
+    <model name='barrel_19'>
+      <pose>93.0 -1.0 0 0 0 0</pose>
+      <static>true</static>
+      <link name='l'>
+        <collision name='c'><geometry><box><size>0.7 0.7 1.0</size></box></geometry><pose>0 0 0.5 0 0 0</pose><max_contacts>10</max_contacts></collision>
+        <visual name='v'><pose>0 0 0.5 0 0 0</pose><geometry><cylinder><radius>0.35</radius><length>1.0</length></cylinder></geometry>
+          <material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/FlatBlack</name></script><ambient>0.2 0.2 0.2 1</ambient></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- ─── Camera position ─── -->
+    <gui fullscreen='0'>
+      <camera name='user_camera'>
+        <pose>-15 0 12 0 0.5 0</pose>
+        <view_controller>orbit</view_controller>
+        <projection_type>perspective</projection_type>
+      </camera>
+    </gui>
+
+  </world>
+</sdf>

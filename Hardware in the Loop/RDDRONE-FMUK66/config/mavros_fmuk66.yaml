@@ -1,0 +1,56 @@
+/**:
+  ros__parameters:
+
+    # ── Serial connection to RDDRONE-FMUK66 ────────────────────────────────
+    # USB-CDC (default): /dev/ttyACM0 at 57600 baud
+    # Stable symlink (after udev rules): /dev/fmuk66
+    # UART (if using TELEM1/TELEM2): /dev/ttyUSB0 at 921600 baud
+    fcu_url: "serial:///dev/ttyACM0:57600"
+
+    # GCS bridge (optional — connect QGroundControl on same machine)
+    gcs_url: "udp://@localhost:14550"
+
+    system_id: 1        # MAVLink system ID of this GCS
+    component_id: 240   # GCS component ID
+
+    # ── Plugin allowlist (only what HITL needs) ────────────────────────────
+    plugin_allowlist:
+      - sys_status
+      - sys_time
+      - command
+      - param
+      - setpoint_position
+      - setpoint_velocity
+      - local_position
+      - global_position
+      - imu
+      - home_position
+      - manual_control
+
+    # ── FMUK66-specific quirks ─────────────────────────────────────────────
+    # The FMUK66 uses USB-CDC ACM — wait a moment for the port to enumerate
+    startup_px4_usb_quirk: true
+
+    # Heartbeat at 1 Hz (reduces MAVLink traffic in HITL)
+    conn:
+      heartbeat_rate: 1.0
+      heartbeat_mav_type: "GCS"
+      timeout: 10.0
+      timesync_rate: 10.0
+
+    # ── Local position (EKF output from real FMUK66 firmware) ─────────────
+    local_position:
+      frame_id: "map"
+      tf:
+        send: true
+        frame_id: "map"
+        child_frame_id: "base_link"
+
+    # ── IMU ────────────────────────────────────────────────────────────────
+    imu:
+      frame_id: "base_link"
+
+    # ── Setpoint position ──────────────────────────────────────────────────
+    setpoint_position:
+      tf:
+        listen: false

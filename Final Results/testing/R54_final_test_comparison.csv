@@ -1,0 +1,4 @@
+test,name,world,obstacles,env_seen,agent,safe_alt_m,result,duration_s,avg_speed_ms,peak_speed_ms,min_depth_m,collisions,near_misses,csv_log,summary_json
+A,Non-PX4 (Native Sim) — Testing World,tunnel_100m_dynamic_20.world,20,False,CERLAB native sim controller,1.5,SUCCESS,99.7,1.739,3.923,0.279,2,38,test_r54_attempt2_20260823_195520.csv,test_r54_summary_20260823_195659.json
+B,PX4 iris (MAVROS OFFBOARD) — Testing World,tunnel_100m_dynamic_20.world,20,False,PX4 iris_depth_camera + MAVROS,2.0,SUCCESS,76.7,2.449,4.849,0.851,0,0,test_px4_attempt1_20260824_083738.csv,test_px4_summary_20260824_083854.json
+C,PX4 iris (MAVROS OFFBOARD) — Training World,tunnel_100m_dynamic_25.world,25,True,PX4 iris_depth_camera + MAVROS,2.0,SUCCESS,80.6,2.195,6.531,0.856,0,0,test_px4_training_attempt1_20260824_114608.csv,test_px4_training_summary_20260824_114729.json

@@ -1,0 +1,154 @@
+# ── Python ────────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+dist/
+.eggs/
+.venv/
+venv/
+env/
+
+# ── PyTorch model checkpoints — keep ONLY r54_best.pth ────────────────────────
+src/tunnel_drl/results_r54/r54_ep*.pth
+src/tunnel_drl/results_v*/
+src/tunnel_drl/results_archive/
+src/tunnel_drl/results/
+src/tunnel_drl/eval_results/
+src/tunnel_drl/mmm/
+src/tunnel_drl/claude/
+src/tunnel_drl/New era/
+src/tunnel_drl/px4_deployment/
+src/tunnel_drl/tools/
+
+# ── ROS / Catkin / Colcon build artifacts ────────────────────────────────────
+build/
+devel/
+install/
+log/
+*.log
+build_output.log
+
+# ── Compiled Gazebo plugin binaries ───────────────────────────────────────────
+uav_simulator/plugins/*.so
+src/uav_simulator/plugins/*.so
+
+# ── Clutter: root-level startup guides ───────────────────────────────────────
+# Keep requirements.txt; exclude only the startup/guide .txt files
+AUTONOMOUS_*.txt
+CHECKLIST.txt
+COMMANDS.txt
+COMPLETE_*.txt
+CORRECTED_*.txt
+CRITICAL_*.txt
+DRONE_*.txt
+FILES_CREATED.txt
+FINAL_*.txt
+HOVERING_*.txt
+MANUAL_*.txt
+MASTER_*.txt
+MAVROS_*.txt
+QUICK_*.txt
+SETUP_*.txt
+SIMPLIFIED_*.txt
+START_*.txt
+SYSTEM_*.txt
+TUNNEL_*.txt
+FIX_SUMMARY.txt
+AUTONOMOUS_*.md
+CORRIDOR_*.md
+DEPLOYMENT_*.md
+DRL_TRAINING_ENVIRONMENT.md
+DRONE_*.md
+FILES_CREATED.txt
+FINAL_*.md
+FINAL_*.sh
+FIND_*.md
+FIXED_*.sh
+FIXES_SUMMARY.md
+FIX_SUMMARY.txt
+GAZEBO_*.md
+HOVERING_*.txt
+IMPLEMENTATION_*.md
+LAUNCH_*.md
+MANUAL_*.txt
+MASTER_*.txt
+MAVROS_*.txt
+PACKAGE_*.md
+QUICK_*.txt
+ROS2_*.md
+SETUP_*.txt
+SETUP_*.md
+SIMPLIFIED_*.txt
+SIMULATION_*.md
+SIMPLE_START.sh
+START_*.txt
+START_*.sh
+SYSTEM_*.md
+SYSTEM_*.txt
+TECHNICAL_*.md
+TERMINAL_*.sh
+terminal_*.sh
+CHECKLIST.txt
+COMMANDS.txt
+COMPLETE_*.txt
+COMPLETE_*.md
+COMPLETE_*.sh
+CORRECTED_*.txt
+CRITICAL_*.txt
+SETUP_COMPLETE.md
+SETUP_SUMMARY.txt
+
+# ── Root-level temp/debug scripts ────────────────────────────────────────────
+check_*.sh
+debug_*.sh
+start_autonomous_navigation.sh
+start_drone_simple.sh
+system_diagnostic.sh
+test_*.sh
+verify_*.sh
+complete_drone_test.sh
+auto_flight.py
+advanced_autonomous_flight.py
+autonomous_flight_controller.py
+autonomous_flight_iris.py
+autonomous_navigation_launch.py
+drone_flight_controller.py
+create_architecture_doc.py
+.tmp_parse_recent_training.py
+*.png
+!Final\ Results/*.png
+!Final\ Results/testing/**/*.png
+*.webm
+
+# ── Old-era working docs / duplicate READMEs ─────────────────────────────────
+CERLAB_R50_Training_Results_Report.docx
+DRL_Architecture_Evolution_v1_to_v5p.docx
+Tunnel_DRL_Technical_Report.docx
+supervisor_meeting_preparation.docx
+
+# ── IDE / editor ──────────────────────────────────────────────────────────────
+.vscode/
+.claude/
+*.swp
+*.swo
+.DS_Store
+
+# ── Misc ──────────────────────────────────────────────────────────────────────
+fastdds_no_shm.xml
+uav_simulator/
+checkpoints/
+remote_control/
+HIL\ results.zip
+Hardware\ in\ the\ Loop/HIL\ results.zip
+Hardware\ in\ the\ Loop/results/*.avif
+Hardware\ in\ the\ Loop/launch/__pycache__/
+Hardware\ in\ the\ Loop/scripts/__pycache__/
+src/tunnel_drl/__pycache__/
+src/tunnel_drl/results_r54/.monitor_r54.pid
+src/tunnel_drl/results_r54/watcher*.log
+src/tunnel_drl/results_r54/gazebo_run*.log
+src/tunnel_drl/results_r54/monitor_r54.log
+src/tunnel_drl/results_r54/training_r54_run*.log
+src/tunnel_drl/results_r54/watch_completion.sh
+src/tunnel_drl/results_r54/training_history_r54.log

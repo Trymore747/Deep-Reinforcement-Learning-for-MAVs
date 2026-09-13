@@ -1,0 +1,119 @@
+<?xml version="1.0"?>
+<launch>
+    <!-- MAVROS posix SITL environment launch script -->
+    <!-- launches MAVROS, PX4 SITL, Gazebo environment, and spawns vehicle -->
+    <!-- vehicle pose -->
+    <arg name="x" default="0"/>
+    <arg name="y" default="0"/>
+    <arg name="z" default="0.1"/>
+    <arg name="R" default="0"/>
+    <arg name="P" default="0"/>
+    <arg name="Y" default="0"/>
+    <!-- vehicle model and world -->
+    <arg name="est" default="ekf2"/>
+    <arg name="vehicle" default="iris"/>
+
+    <!-- <arg name="world" default="$(find uav_simulator)/worlds/square/square_box.world" /> -->
+    <!-- <arg name="world" default="$(find uav_simulator)/worlds/square/square_static.world" /> -->
+    <!-- <arg name="world" default="$(find uav_simulator)/worlds/square/square_test.world" /> -->
+    <!-- <arg name="world" default="$(find uav_simulator)/worlds/square/square_dynamic_7.world" /> -->
+    <!-- <arg name="world" default="$(find uav_simulator)/worlds/square/square_box_dynamic_8.world" /> -->
+    <!-- <arg name="world" default="$(find uav_simulator)/worlds/square/square_box_dynamic_14.world" /> -->
+
+    <!-- <arg name="world" default="$(find uav_simulator)/worlds/floorplan1/floorplan1_static.world"/> -->
+    <!-- <arg name="world" default="$(find uav_simulator)/worlds/floorplan1/floorplan1_dynamic_6.world"/> -->
+    <!-- <arg name="world" default="$(find uav_simulator)/worlds/floorplan1/floorplan1_dynamic_16.world"/> -->
+
+    <!-- <arg name="world" default="$(find uav_simulator)/worlds/floorplan2/floorplan2_static.world"/> -->
+    <!-- <arg name="world" default="$(find uav_simulator)/worlds/floorplan2/floorplan2_dynamic_5.world"/> -->
+    <!-- <arg name="world" default="$(find uav_simulator)/worlds/floorplan2/floorplan2_dynamic_12.world"/> -->
+
+    <!-- <arg name="world" default="$(find uav_simulator)/worlds/floorplan3/floorplan3_static.world"/> -->
+    <!-- <arg name="world" default="$(find uav_simulator)/worlds/floorplan3/floorplan3_dynamic_8.world"/> -->
+    <!-- <arg name="world" default="$(find uav_simulator)/worlds/floorplan3/floorplan3_box_static.world"/> -->
+    <!-- <arg name="world" default="$(find uav_simulator)/worlds/floorplan3/floorplan3_box_dynamic_4.world"/> -->
+
+    <!-- <arg name="world" default="$(find uav_simulator)/worlds/floorplan4/floorplan4_static.world"/> -->
+
+    <!-- <arg name="world" default="$(find uav_simulator)/worlds/corridor/corridor_static.world"/> -->
+    <arg name="world" default="$(find uav_simulator)/worlds/corridor/corridor_dynamic_9.world"/>
+
+    <!-- <arg name="world" default="$(find uav_simulator)/worlds/tunnel/tunnel_basic_static.world"/> -->
+    <!-- <arg name="world" default="$(find uav_simulator)/worlds/tunnel/tunnel_c_shape_basic_static.world"/> -->
+    <!-- <arg name="world" default="$(find uav_simulator)/worlds/tunnel/tunnel_dynamic_1.world"/> -->
+    <!-- <arg name="world" default="$(find uav_simulator)/worlds/tunnel/tunnel_s_shape_basic_static.world"/> -->
+    <!-- <arg name="world" default="$(find uav_simulator)/worlds/tunnel/tunnel_static.world"/> -->
+    <!-- <arg name="world" default="$(find uav_simulator)/worlds/tunnel/tunnel_static_long.world"/> -->
+    <!-- <arg name="world" default="$(find uav_simulator)/worlds/tunnel/tunnel_straight_basic_static.world"/> -->
+    <!-- <arg name="world" default="$(find uav_simulator)/worlds/tunnel/tunnel_straight_dynamic_5.world"/> -->
+    <!-- <arg name="world" default="$(find uav_simulator)/worlds/tunnel/tunnel_straight_static.world"/> -->
+
+    <!-- <arg name="world" default="$(find uav_simulator)/worlds/building/building_2f_static.world"/> -->
+    <!-- <arg name="world" default="$(find uav_simulator)/worlds/building/building_4f_static.world"/> -->
+
+    <!-- <arg name="world" default="$(find uav_simulator)/worlds/bridge/bridge_static.world"/> -->
+
+    <!-- <arg name="world" default="$(find uav_simulator)/worlds/test/empty.world"/> -->
+    <!-- <arg name="world" default="$(find uav_simulator)/worlds/test/test.world"/> -->
+    <!-- <arg name="world" default="$(find uav_simulator)/worlds/test/test2.world"/> -->
+    <!-- <arg name="world" default="$(find uav_simulator)/worlds/test/test_mill19_1.world"/> -->
+    <!-- <arg name="world" default="$(find uav_simulator)/worlds/test/test_mill19_2.world"/> -->
+    <!-- <arg name="world" default="$(find uav_simulator)/worlds/test/test_mill19_3.world"/> -->
+
+
+    <!-- <arg name="world" default="$(find uav_simulator)/worlds/simple_box/simple_box_static.world"/> -->
+    <!-- <arg name="world" default="$(find uav_simulator)/worlds/simple_box/simple_box_dynamic_3.world"/> -->
+
+
+    <!-- <arg name="world" default="$(find uav_simulator)/worlds/room/room_empty.world"/> -->
+    <!-- <arg name="world" default="$(find uav_simulator)/worlds/room/room_static.world"/> -->
+
+
+    <arg name="sdf" default="$(find uav_simulator)/urdf/px4_iris.sdf"/>
+    <!-- <arg name="sdf" default="$(find mavlink_sitl_gazebo)/models/$(arg vehicle)/$(arg vehicle).sdf"/> -->
+
+
+    <!-- gazebo configs -->
+    <arg name="gui" default="true"/>
+    <arg name="debug" default="false"/>
+    <arg name="verbose" default="false"/>
+    <arg name="paused" default="false"/>
+    <arg name="respawn_gazebo" default="false"/>
+    <!-- MAVROS configs -->
+    <arg name="fcu_url" default="udp://:14540@localhost:14557"/>
+    <arg name="respawn_mavros" default="false"/>
+    <!-- PX4 configs -->
+    <arg name="interactive" default="true"/>
+    <!-- PX4 SITL and Gazebo -->
+    <include file="$(find px4)/launch/posix_sitl.launch">
+        <arg name="x" value="$(arg x)"/>
+        <arg name="y" value="$(arg y)"/>
+        <arg name="z" value="$(arg z)"/>
+        <arg name="R" value="$(arg R)"/>
+        <arg name="P" value="$(arg P)"/>
+        <arg name="Y" value="$(arg Y)"/>
+        <arg name="world" value="$(arg world)"/>
+        <arg name="vehicle" value="$(arg vehicle)"/>
+        <arg name="sdf" value="$(arg sdf)"/>
+        <arg name="gui" value="$(arg gui)"/>
+        <arg name="interactive" value="$(arg interactive)"/>
+        <arg name="debug" value="$(arg debug)"/>
+        <arg name="verbose" value="$(arg verbose)"/>
+        <arg name="paused" value="$(arg paused)"/>
+        <arg name="respawn_gazebo" value="$(arg respawn_gazebo)"/>
+    </include>
+    <!-- MAVROS -->
+    <include file="$(find mavros)/launch/px4.launch">
+        <!-- GCS link is provided by SITL -->
+        <arg name="gcs_url" value=""/>
+        <arg name="fcu_url" value="$(arg fcu_url)"/>
+        <arg name="respawn_mavros" value="$(arg respawn_mavros)"/>
+    </include>
+    
+    <include file="$(find uav_simulator)/launch/setupTF.launch" >
+        <arg name="pose_topic" value="/mavros/local_position/pose" />
+    </include>
+
+    <!-- <include file="$(find uav_simulator)/launch/rviz_px4.launch"></include> -->
+
+</launch>

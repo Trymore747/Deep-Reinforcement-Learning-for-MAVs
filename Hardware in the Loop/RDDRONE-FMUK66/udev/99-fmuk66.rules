@@ -1,0 +1,28 @@
+# udev rules for NXP RDDRONE-FMUK66 Flight Management Unit
+# Place at: /etc/udev/rules.d/99-fmuk66.rules
+# Reload with: sudo udevadm control --reload-rules && sudo udevadm trigger
+#
+# These rules grant the dialout group rw access without needing sudo,
+# and create stable symlinks for the device.
+
+# ── FMUK66 in normal PX4 running mode (USB-CDC / MAVLink) ───────────────────
+# NXP Kinetis K66 USB-CDC ACM device
+SUBSYSTEM=="tty", ATTRS{idVendor}=="1fc9", ATTRS{idProduct}=="0102", \
+    MODE="0666", GROUP="dialout", SYMLINK+="fmuk66"
+
+# ── FMUK66 in DFU / bootloader mode ─────────────────────────────────────────
+SUBSYSTEM=="usb", ATTRS{idVendor}=="1fc9", ATTRS{idProduct}=="0102", \
+    MODE="0666", GROUP="dialout"
+
+# ── Broader PX4 USB-CDC rule (catches all PX4-based FCs via ACM) ─────────────
+# Covers cases where the board reports as a generic USB-CDC serial
+SUBSYSTEM=="tty", ATTRS{product}=="PX4 FMU*",  \
+    MODE="0666", GROUP="dialout", SYMLINK+="px4fmu"
+
+SUBSYSTEM=="tty", ATTRS{product}=="*FMUK66*",  \
+    MODE="0666", GROUP="dialout", SYMLINK+="fmuk66"
+
+# ── USB-CDC ACM fallback (ttyACM* broadened permissions) ────────────────────
+# Only if nothing else matched — gives dialout group access to any ACM device
+KERNEL=="ttyACM[0-9]*", SUBSYSTEM=="tty", \
+    MODE="0664", GROUP="dialout"

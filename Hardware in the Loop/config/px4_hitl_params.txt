@@ -1,0 +1,47 @@
+# ============================================================
+# PX4 Parameters for Hardware-in-the-Loop (HITL) Mode
+# ============================================================
+# Set these via QGroundControl (Vehicle Setup → Parameters)
+# OR via MAVLink shell:  param set <NAME> <VALUE>
+#
+# IMPORTANT: After setting HITL_ENABLE=1, REBOOT the FC.
+# The FC will then expect sensor data from the simulator,
+# NOT from its real onboard sensors.
+# ============================================================
+
+# ── HITL Core ───────────────────────────────────────────────
+HITL_ENABLE          = 1       # Enable HITL mode (reboot required)
+SIM_GPS_USED         = 1       # Use simulated GPS (from Gazebo)
+
+# ── EKF2 ────────────────────────────────────────────────────
+EKF2_AID_MASK        = 1       # GPS only (no optical flow, no vision)
+EKF2_HGT_MODE        = 0       # Barometric height (simulated)
+EKF2_GBIAS_INIT      = 0.1
+EKF2_ABIAS_INIT      = 0.2
+
+# ── Flight modes ────────────────────────────────────────────
+COM_RCL_EXCEPT       = 4       # Do not failsafe on RC loss (offboard)
+NAV_DLL_ACT          = 0       # No data-link loss action
+NAV_RCL_ACT          = 0       # No RC loss action
+COM_OF_LOSS_T        = 1.0     # 1s offboard loss timeout
+COM_OBL_ACT          = 0       # Land on offboard loss (safe default)
+
+# ── Offboard (MAVROS setpoint_position) ─────────────────────
+MPC_XY_CRUISE        = 4.5     # Max horizontal speed (m/s) — match TEST_MAX_SPEED
+MPC_Z_VEL_MAX_UP     = 2.0     # Max ascent rate
+MPC_Z_VEL_MAX_DN     = 2.0     # Max descent rate
+MPC_TILTMAX_AIR      = 35.0    # Max tilt angle (degrees)
+MPC_MAN_TILT_MAX     = 35.0
+
+# ── Geofence (disable for HITL test) ────────────────────────
+GF_ACTION            = 0       # No geofence enforcement
+GF_MAX_HOR_DIST      = 0       # Unlimited horizontal range
+
+# ── Logging ─────────────────────────────────────────────────
+SDLOG_MODE           = 1       # Log from boot
+SDLOG_PROFILE        = 3       # High-rate + estimator
+
+# ── Arming ──────────────────────────────────────────────────
+COM_PREARM_MODE      = 0       # No pre-arm checks (HITL — sensors are simulated)
+CBRK_IO_SAFETY       = 22027   # Bypass IO safety (allows arming without RC)
+CBRK_USB_CHK         = 197848  # Allow arming while USB connected

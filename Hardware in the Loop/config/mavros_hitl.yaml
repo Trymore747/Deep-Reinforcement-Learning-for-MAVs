@@ -1,0 +1,48 @@
+/**:
+  ros__parameters:
+    # ── FCU Connection (Hardware) ───────────────────────────────────────────────
+    # Change port/baud to match your flight controller:
+    #   Pixhawk via USB:   serial:///dev/ttyACM0:57600
+    #   Pixhawk via UART:  serial:///dev/ttyUSB0:921600
+    #   Pixhawk via UDP:   udp://:14540@localhost:14557  (SITL fallback)
+    fcu_url: "serial:///dev/ttyACM0:57600"
+    target_system_id: 1
+    target_component_id: 1
+    fcu_protocol: "v2.0"
+
+    # ── TF frames ───────────────────────────────────────────────────────────────
+    frame_id: "map"
+    child_frame_id: "base_link"
+    local_position_frame: "map"
+
+    # ── Timeouts ────────────────────────────────────────────────────────────────
+    conn_timeout: 30.0
+    heartbeat_rate: 1.0
+    heartbeat_mav_type: "ONBOARD_CONTROLLER"
+    startup_px4_usb_quirk: true
+
+    # ── Plugins (minimum set for R54 HITL inference) ────────────────────────────
+    plugin_allowlist:
+      - sys_status       # arm/disarm state, mode
+      - sys_time         # time sync FC ↔ ROS
+      - command          # arming + set_mode services
+      - param            # read/write PX4 parameters
+      - setpoint_position  # /mavros/setpoint_position/local
+      - local_position   # /mavros/local_position/odom (EKF pose)
+      - imu              # /mavros/imu/data (for altitude monitoring)
+      - home_position    # home point reference
+
+    plugin_denylist:
+      - image_pub
+      - vibration
+      - distance_sensor
+      - rangefinder
+      - wheel_odometry
+      - obstacle_distance
+      - actuator_control
+      - waypoint
+      - mocap_pose_estimate
+      - ftp
+      - gimbal_control
+      - geofence
+      - log_transfer

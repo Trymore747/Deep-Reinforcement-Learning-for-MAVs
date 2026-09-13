@@ -1,0 +1,72 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# PX4 Parameters for RDDRONE-FMUK66 HITL Mode
+# Set these via QGroundControl → Vehicle Setup → Parameters
+# or via MAVLink: param set <NAME> <VALUE>
+#
+# IMPORTANT: After setting HITL_ENABLE=1, REBOOT the FC before anything else.
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# ── HITL core ──────────────────────────────────────────────────────────────────
+HITL_ENABLE          = 1       # Enable HITL mode — REBOOT REQUIRED after this
+SIM_GPS_USED         = 1       # Use simulated GPS from Gazebo (not real GPS)
+
+# ── Safety circuit-breakers (disable for HITL — no real motors, no IO board) ──
+CBRK_IO_SAFETY       = 22027   # Disable IO safety check (no servo rail in HITL)
+CBRK_USB_CHK         = 197848  # Allow arming while USB connected
+CBRK_FLIGHTTERM      = 121212  # Disable flight termination in HITL
+CBRK_ENGINEFAIL      = 284953  # Disable engine failure check
+
+# ── RC loss handling (no RC transmitter needed in HITL) ───────────────────────
+COM_RCL_EXCEPT       = 4       # Bit 2 set → ignore RC loss in OFFBOARD mode
+COM_RC_IN_MODE       = 1       # RC signal not required
+NAV_RCL_ACT          = 0       # No action on RC loss (HITL doesn't use RC)
+
+# ── Geofence ──────────────────────────────────────────────────────────────────
+GF_ACTION            = 0       # No geofence action (Gazebo world is the fence)
+
+# ── Speed and flight parameters ────────────────────────────────────────────────
+MPC_XY_CRUISE        = 4.5     # Cruise speed m/s (matches R54 policy test cap)
+MPC_XY_VEL_MAX       = 5.0     # Max horizontal speed m/s
+MPC_Z_VEL_MAX_UP     = 2.0     # Max climb rate m/s
+MPC_Z_VEL_MAX_DN     = 1.5     # Max descent rate m/s
+MPC_TKO_SPEED        = 1.5     # Takeoff speed m/s
+MPC_LAND_SPEED       = 0.7     # Landing speed m/s
+
+# ── OFFBOARD control ──────────────────────────────────────────────────────────
+COM_OF_LOSS_T        = 5.0     # 5s timeout before OFFBOARD loss action
+COM_OBL_ACT          = 0       # Return to land on OFFBOARD loss
+COM_OBL_RC_ACT       = 0       # Same with RC
+
+# ── EKF2 (uses simulated sensors in HITL) ─────────────────────────────────────
+EKF2_HGT_REF         = 0       # Height reference: barometric
+EKF2_AID_MASK        = 1       # Use GPS only
+
+# ── FMUK66-specific: NXP sensor configuration ─────────────────────────────────
+# These are handled automatically by the FMUK66 board config in PX4
+# No manual changes needed for IMU/MAG/BARO
+
+# ── Logging ───────────────────────────────────────────────────────────────────
+SDLOG_PROFILE        = 1       # Default log profile
+SDLOG_MODE           = 0       # Log while armed
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# How to apply these parameters:
+#
+# Option A — QGroundControl (recommended):
+#   1. Open ~/QGroundControl.AppImage
+#   2. Connect FMUK66 via USB
+#   3. Vehicle Setup → Parameters → search each name → set value → save
+#   4. After all params set: reboot FC (power cycle or QGC → Reboot)
+#
+# Option B — MAVLink CLI (one-liner via MAVROS):
+#   ros2 run mavros mavparam set HITL_ENABLE 1
+#   ros2 run mavros mavparam set SIM_GPS_USED 1
+#   ... (repeat for each)
+#   ros2 run mavros mavcmd long 246 0 0 0 0 0 0 0  # MAV_CMD_PREFLIGHT_REBOOT_SHUTDOWN
+#
+# Option C — PX4 console via screen (USB debug shell):
+#   screen /dev/ttyACM0 57600
+#   param set HITL_ENABLE 1
+#   param save
+#   reboot
+# ═══════════════════════════════════════════════════════════════════════════════

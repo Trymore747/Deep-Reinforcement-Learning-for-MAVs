@@ -1,0 +1,1 @@
+step,phase,t_s,x_m,y_m,z_m,vx_ms,vy_ms,vz_ms,fwd_progress_m,lat_offset_m,speed_ms,front_d_m,min_depth_m,prox_alarm,depth_top,depth_mid,depth_bot,tgt_x,tgt_y,tgt_z,collision,near_miss,armed,mode

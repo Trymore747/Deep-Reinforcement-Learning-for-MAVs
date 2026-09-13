@@ -1,0 +1,1272 @@
+<sdf version='1.7'>
+  <world name='default'>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         REALISTIC UNDERGROUND MINING TUNNEL — 100m
+         ─────────────────────────────────────────────────────────────────
+         • Dark underground atmosphere with dim point-lights (mining lamps)
+         • 8 dynamic persons (32%): 4 cross-tunnel + 4 along-tunnel
+         • 17 static obstacles (68%): mine carts, rock piles, timber beams,
+           equipment crates, barrel drums, pipe stacks, rubble
+         • Several obstacles placed ALONG the X-axis (centreline) to force
+           the DRL agent to learn lateral avoidance
+         • First 10 m clear for takeoff / acceleration zone
+         • Uses TESTED person model format from tunnel_100m_dynamic_30.world
+         ═══════════════════════════════════════════════════════════════════ -->
+
+
+    <!-- ══════════════════════════════════════════════════════════════════
+         DYNAMIC OBSTACLES — 8 walking mine workers
+         ══════════════════════════════════════════════════════════════════ -->
+
+    <!-- ── CROSS-TUNNEL WALKERS (Y direction) — workers crossing tunnel ── -->
+
+    <!-- Worker 1: X=12, walks Y=2.5 ↔ -2.5 -->
+    <model name="person1_0.5_0.5_1.8">
+      <pose>0 0 0 0 0 0</pose>
+      <link name="link">
+        <inertial><mass>75.0</mass>
+          <inertia><ixx>16.75</ixx><ixy>0</ixy><ixz>0</ixz><iyy>16.75</iyy><iyz>0</iyz><izz>1.5</izz></inertia>
+        </inertial>
+        <collision name="body"><pose>0 0 0.95 0 0 0</pose>
+          <geometry><cylinder><radius>0.35</radius><length>1.9</length></cylinder></geometry>
+          <surface><contact><ode><soft_cfm>0</soft_cfm><soft_erp>0.2</soft_erp></ode></contact>
+          <friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <collision name="bottom"><pose>0 0 0.01 0 0 1.57</pose>
+          <geometry><box><size>0.35 0.75 0.02</size></box></geometry>
+        </collision>
+        <visual name="visual"><pose>0 0 -0.02 0 0 1.57</pose>
+          <geometry><mesh><uri>model://person/meshes/walking.dae</uri></mesh></geometry>
+        </visual>
+      </link>
+      <plugin name="obstacle_motion" filename="libobstaclePathPlugin.so">
+        <loop>0</loop><velocity>0.5</velocity><angular_velocity>0.8</angular_velocity>
+        <path><waypoint>12.0 2.5 0.0</waypoint><waypoint>12.0 -2.5 0.0</waypoint></path>
+      </plugin>
+    </model>
+
+    <!-- Worker 2: X=28, walks Y=-2.5 ↔ 2.5 -->
+    <model name="person2_0.5_0.5_1.8">
+      <pose>0 0 0 0 0 0</pose>
+      <link name="link">
+        <inertial><mass>75.0</mass>
+          <inertia><ixx>16.75</ixx><ixy>0</ixy><ixz>0</ixz><iyy>16.75</iyy><iyz>0</iyz><izz>1.5</izz></inertia>
+        </inertial>
+        <collision name="body"><pose>0 0 0.95 0 0 0</pose>
+          <geometry><cylinder><radius>0.35</radius><length>1.9</length></cylinder></geometry>
+          <surface><contact><ode><soft_cfm>0</soft_cfm><soft_erp>0.2</soft_erp></ode></contact>
+          <friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <collision name="bottom"><pose>0 0 0.01 0 0 1.57</pose>
+          <geometry><box><size>0.35 0.75 0.02</size></box></geometry>
+        </collision>
+        <visual name="visual"><pose>0 0 -0.02 0 0 1.57</pose>
+          <geometry><mesh><uri>model://person/meshes/walking.dae</uri></mesh></geometry>
+        </visual>
+      </link>
+      <plugin name="obstacle_motion" filename="libobstaclePathPlugin.so">
+        <loop>0</loop><velocity>0.6</velocity><angular_velocity>0.8</angular_velocity>
+        <path><waypoint>28.0 -2.5 0.0</waypoint><waypoint>28.0 2.5 0.0</waypoint></path>
+      </plugin>
+    </model>
+
+    <!-- Worker 3: X=50, walks Y=2.0 ↔ -2.0 -->
+    <model name="person3_0.5_0.5_1.8">
+      <pose>0 0 0 0 0 0</pose>
+      <link name="link">
+        <inertial><mass>75.0</mass>
+          <inertia><ixx>16.75</ixx><ixy>0</ixy><ixz>0</ixz><iyy>16.75</iyy><iyz>0</iyz><izz>1.5</izz></inertia>
+        </inertial>
+        <collision name="body"><pose>0 0 0.95 0 0 0</pose>
+          <geometry><cylinder><radius>0.35</radius><length>1.9</length></cylinder></geometry>
+          <surface><contact><ode><soft_cfm>0</soft_cfm><soft_erp>0.2</soft_erp></ode></contact>
+          <friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <collision name="bottom"><pose>0 0 0.01 0 0 1.57</pose>
+          <geometry><box><size>0.35 0.75 0.02</size></box></geometry>
+        </collision>
+        <visual name="visual"><pose>0 0 -0.02 0 0 1.57</pose>
+          <geometry><mesh><uri>model://person/meshes/walking.dae</uri></mesh></geometry>
+        </visual>
+      </link>
+      <plugin name="obstacle_motion" filename="libobstaclePathPlugin.so">
+        <loop>0</loop><velocity>0.5</velocity><angular_velocity>0.8</angular_velocity>
+        <path><waypoint>50.0 2.0 0.0</waypoint><waypoint>50.0 -2.0 0.0</waypoint></path>
+      </plugin>
+    </model>
+
+    <!-- Worker 4: X=75, walks Y=-2.0 ↔ 2.0 -->
+    <model name="person4_0.5_0.5_1.8">
+      <pose>0 0 0 0 0 0</pose>
+      <link name="link">
+        <inertial><mass>75.0</mass>
+          <inertia><ixx>16.75</ixx><ixy>0</ixy><ixz>0</ixz><iyy>16.75</iyy><iyz>0</iyz><izz>1.5</izz></inertia>
+        </inertial>
+        <collision name="body"><pose>0 0 0.95 0 0 0</pose>
+          <geometry><cylinder><radius>0.35</radius><length>1.9</length></cylinder></geometry>
+          <surface><contact><ode><soft_cfm>0</soft_cfm><soft_erp>0.2</soft_erp></ode></contact>
+          <friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <collision name="bottom"><pose>0 0 0.01 0 0 1.57</pose>
+          <geometry><box><size>0.35 0.75 0.02</size></box></geometry>
+        </collision>
+        <visual name="visual"><pose>0 0 -0.02 0 0 1.57</pose>
+          <geometry><mesh><uri>model://person/meshes/walking.dae</uri></mesh></geometry>
+        </visual>
+      </link>
+      <plugin name="obstacle_motion" filename="libobstaclePathPlugin.so">
+        <loop>0</loop><velocity>0.6</velocity><angular_velocity>0.8</angular_velocity>
+        <path><waypoint>75.0 -2.0 0.0</waypoint><waypoint>75.0 2.0 0.0</waypoint></path>
+      </plugin>
+    </model>
+
+    <!-- ── ALONG-TUNNEL WALKERS (X direction) — workers patrolling ── -->
+
+    <!-- Worker 5: X=18→23, Y=-2 -->
+    <model name="person5_0.5_0.5_1.8">
+      <pose>0 0 0 0 0 0</pose>
+      <link name="link">
+        <inertial><mass>75.0</mass>
+          <inertia><ixx>16.75</ixx><ixy>0</ixy><ixz>0</ixz><iyy>16.75</iyy><iyz>0</iyz><izz>1.5</izz></inertia>
+        </inertial>
+        <collision name="body"><pose>0 0 0.95 0 0 0</pose>
+          <geometry><cylinder><radius>0.35</radius><length>1.9</length></cylinder></geometry>
+          <surface><contact><ode><soft_cfm>0</soft_cfm><soft_erp>0.2</soft_erp></ode></contact>
+          <friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <collision name="bottom"><pose>0 0 0.01 0 0 1.57</pose>
+          <geometry><box><size>0.35 0.75 0.02</size></box></geometry>
+        </collision>
+        <visual name="visual"><pose>0 0 -0.02 0 0 1.57</pose>
+          <geometry><mesh><uri>model://person/meshes/walking.dae</uri></mesh></geometry>
+        </visual>
+      </link>
+      <plugin name="obstacle_motion" filename="libobstaclePathPlugin.so">
+        <loop>0</loop><velocity>0.6</velocity><angular_velocity>0.8</angular_velocity>
+        <path><waypoint>18.0 -2.0 0.0</waypoint><waypoint>23.0 -2.0 0.0</waypoint></path>
+      </plugin>
+    </model>
+
+    <!-- Worker 6: X=42→48, Y=2 -->
+    <model name="person6_0.5_0.5_1.8">
+      <pose>0 0 0 0 0 0</pose>
+      <link name="link">
+        <inertial><mass>75.0</mass>
+          <inertia><ixx>16.75</ixx><ixy>0</ixy><ixz>0</ixz><iyy>16.75</iyy><iyz>0</iyz><izz>1.5</izz></inertia>
+        </inertial>
+        <collision name="body"><pose>0 0 0.95 0 0 0</pose>
+          <geometry><cylinder><radius>0.35</radius><length>1.9</length></cylinder></geometry>
+          <surface><contact><ode><soft_cfm>0</soft_cfm><soft_erp>0.2</soft_erp></ode></contact>
+          <friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <collision name="bottom"><pose>0 0 0.01 0 0 1.57</pose>
+          <geometry><box><size>0.35 0.75 0.02</size></box></geometry>
+        </collision>
+        <visual name="visual"><pose>0 0 -0.02 0 0 1.57</pose>
+          <geometry><mesh><uri>model://person/meshes/walking.dae</uri></mesh></geometry>
+        </visual>
+      </link>
+      <plugin name="obstacle_motion" filename="libobstaclePathPlugin.so">
+        <loop>0</loop><velocity>0.5</velocity><angular_velocity>0.8</angular_velocity>
+        <path><waypoint>42.0 2.0 0.0</waypoint><waypoint>48.0 2.0 0.0</waypoint></path>
+      </plugin>
+    </model>
+
+    <!-- Worker 7: X=62→68, Y=-1.5 -->
+    <model name="person7_0.5_0.5_1.8">
+      <pose>0 0 0 0 0 0</pose>
+      <link name="link">
+        <inertial><mass>75.0</mass>
+          <inertia><ixx>16.75</ixx><ixy>0</ixy><ixz>0</ixz><iyy>16.75</iyy><iyz>0</iyz><izz>1.5</izz></inertia>
+        </inertial>
+        <collision name="body"><pose>0 0 0.95 0 0 0</pose>
+          <geometry><cylinder><radius>0.35</radius><length>1.9</length></cylinder></geometry>
+          <surface><contact><ode><soft_cfm>0</soft_cfm><soft_erp>0.2</soft_erp></ode></contact>
+          <friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <collision name="bottom"><pose>0 0 0.01 0 0 1.57</pose>
+          <geometry><box><size>0.35 0.75 0.02</size></box></geometry>
+        </collision>
+        <visual name="visual"><pose>0 0 -0.02 0 0 1.57</pose>
+          <geometry><mesh><uri>model://person/meshes/walking.dae</uri></mesh></geometry>
+        </visual>
+      </link>
+      <plugin name="obstacle_motion" filename="libobstaclePathPlugin.so">
+        <loop>0</loop><velocity>0.7</velocity><angular_velocity>0.8</angular_velocity>
+        <path><waypoint>62.0 -1.5 0.0</waypoint><waypoint>68.0 -1.5 0.0</waypoint></path>
+      </plugin>
+    </model>
+
+    <!-- Worker 8: X=85→92, Y=2 -->
+    <model name="person8_0.5_0.5_1.8">
+      <pose>0 0 0 0 0 0</pose>
+      <link name="link">
+        <inertial><mass>75.0</mass>
+          <inertia><ixx>16.75</ixx><ixy>0</ixy><ixz>0</ixz><iyy>16.75</iyy><iyz>0</iyz><izz>1.5</izz></inertia>
+        </inertial>
+        <collision name="body"><pose>0 0 0.95 0 0 0</pose>
+          <geometry><cylinder><radius>0.35</radius><length>1.9</length></cylinder></geometry>
+          <surface><contact><ode><soft_cfm>0</soft_cfm><soft_erp>0.2</soft_erp></ode></contact>
+          <friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <collision name="bottom"><pose>0 0 0.01 0 0 1.57</pose>
+          <geometry><box><size>0.35 0.75 0.02</size></box></geometry>
+        </collision>
+        <visual name="visual"><pose>0 0 -0.02 0 0 1.57</pose>
+          <geometry><mesh><uri>model://person/meshes/walking.dae</uri></mesh></geometry>
+        </visual>
+      </link>
+      <plugin name="obstacle_motion" filename="libobstaclePathPlugin.so">
+        <loop>0</loop><velocity>0.5</velocity><angular_velocity>0.8</angular_velocity>
+        <path><waypoint>85.0 2.0 0.0</waypoint><waypoint>92.0 2.0 0.0</waypoint></path>
+      </plugin>
+    </model>
+
+
+    <!-- ══════════════════════════════════════════════════════════════════
+         STATIC OBSTACLES — 17 realistic mining objects (68%)
+         Mix of: rock piles, mine carts, timber support beams, equipment
+         crates, barrel drums, pipe stacks, ventilation ducts, rubble
+         ★ Several placed ON / NEAR the X centreline (Y≈0) to force
+           lateral avoidance — essential for DRL training
+         ══════════════════════════════════════════════════════════════════ -->
+
+    <!-- ── Rock pile: large irregular boulder at X=14, centre-left (Y=0.3) ── -->
+    <model name='rock_pile_01'>
+      <static>1</static>
+      <link name='link'>
+        <collision name='c'><geometry><box><size>1.6 1.4 1.8</size></box></geometry></collision>
+        <visual name='v'><geometry><box><size>1.6 1.4 1.8</size></box></geometry>
+          <material><ambient>0.25 0.22 0.18 1</ambient><diffuse>0.30 0.26 0.20 1</diffuse></material>
+        </visual>
+      </link>
+      <pose>14.0 0.3 0.9 0 0 0.15</pose>
+    </model>
+
+    <!-- ── Mine cart on rails: X=20, dead-centre (Y=0) ── -->
+    <model name='mine_cart_01'>
+      <static>1</static>
+      <link name='link'>
+        <collision name='cart_body'><pose>0 0 0.7 0 0 0</pose>
+          <geometry><box><size>1.8 1.2 1.4</size></box></geometry></collision>
+        <visual name='cart_body_v'><pose>0 0 0.7 0 0 0</pose>
+          <geometry><box><size>1.8 1.2 1.4</size></box></geometry>
+          <material><ambient>0.35 0.30 0.25 1</ambient><diffuse>0.40 0.35 0.28 1</diffuse></material>
+        </visual>
+        <!-- Load of ore on top -->
+        <visual name='ore_load'><pose>0 0 1.5 0 0 0</pose>
+          <geometry><box><size>1.5 0.9 0.2</size></box></geometry>
+          <material><ambient>0.20 0.18 0.15 1</ambient><diffuse>0.28 0.24 0.18 1</diffuse></material>
+        </visual>
+        <collision name='ore_c'><pose>0 0 1.5 0 0 0</pose>
+          <geometry><box><size>1.5 0.9 0.2</size></box></geometry></collision>
+        <visual name='wheel_fl'><pose>0.6 0.65 0.15 1.5708 0 0</pose>
+          <geometry><cylinder><radius>0.15</radius><length>0.08</length></cylinder></geometry>
+          <material><ambient>0.15 0.15 0.15 1</ambient></material></visual>
+        <visual name='wheel_fr'><pose>0.6 -0.65 0.15 1.5708 0 0</pose>
+          <geometry><cylinder><radius>0.15</radius><length>0.08</length></cylinder></geometry>
+          <material><ambient>0.15 0.15 0.15 1</ambient></material></visual>
+        <visual name='wheel_rl'><pose>-0.6 0.65 0.15 1.5708 0 0</pose>
+          <geometry><cylinder><radius>0.15</radius><length>0.08</length></cylinder></geometry>
+          <material><ambient>0.15 0.15 0.15 1</ambient></material></visual>
+        <visual name='wheel_rr'><pose>-0.6 -0.65 0.15 1.5708 0 0</pose>
+          <geometry><cylinder><radius>0.15</radius><length>0.08</length></cylinder></geometry>
+          <material><ambient>0.15 0.15 0.15 1</ambient></material></visual>
+      </link>
+      <pose>20.0 0.0 0.0 0 0 0</pose>
+    </model>
+
+    <!-- ── Timber support beam fallen across: X=25, Y=1.5 (right side) ── -->
+    <model name='timber_beam_01'>
+      <static>1</static>
+      <link name='link'>
+        <collision name='c'><geometry><box><size>3.0 0.30 0.30</size></box></geometry></collision>
+        <visual name='v'><geometry><box><size>3.0 0.30 0.30</size></box></geometry>
+          <material><ambient>0.45 0.30 0.12 1</ambient><diffuse>0.55 0.38 0.15 1</diffuse></material>
+        </visual>
+      </link>
+      <pose>25.0 1.5 1.4 0 0.25 0</pose>
+    </model>
+
+    <!-- ── Equipment crate stack: X=30, Y=-2.0 (left wall side) — 3 crates high ── -->
+    <model name='crate_stack_01'>
+      <static>1</static>
+      <link name='link'>
+        <collision name='c1'><pose>0 0 0.4 0 0 0</pose>
+          <geometry><box><size>1.0 0.8 0.8</size></box></geometry></collision>
+        <visual name='v1'><pose>0 0 0.4 0 0 0</pose>
+          <geometry><box><size>1.0 0.8 0.8</size></box></geometry>
+          <material><ambient>0.50 0.42 0.20 1</ambient><diffuse>0.55 0.45 0.22 1</diffuse></material>
+        </visual>
+        <collision name='c2'><pose>0.05 0.03 1.1 0 0 0.05</pose>
+          <geometry><box><size>0.95 0.75 0.8</size></box></geometry></collision>
+        <visual name='v2'><pose>0.05 0.03 1.1 0 0 0.05</pose>
+          <geometry><box><size>0.95 0.75 0.8</size></box></geometry>
+          <material><ambient>0.48 0.40 0.18 1</ambient><diffuse>0.52 0.43 0.20 1</diffuse></material>
+        </visual>
+        <collision name='c3'><pose>-0.05 0.05 1.75 0 0 -0.08</pose>
+          <geometry><box><size>0.85 0.7 0.5</size></box></geometry></collision>
+        <visual name='v3'><pose>-0.05 0.05 1.75 0 0 -0.08</pose>
+          <geometry><box><size>0.85 0.7 0.5</size></box></geometry>
+          <material><ambient>0.45 0.38 0.16 1</ambient><diffuse>0.50 0.42 0.19 1</diffuse></material>
+        </visual>
+      </link>
+      <pose>30.0 -2.0 0.0 0 0 0</pose>
+    </model>
+
+    <!-- ── Barrel drums (3 clustered): X=34, Y=0.5 — near centreline ── -->
+    <model name='barrel_cluster_01'>
+      <static>1</static>
+      <link name='link'>
+        <collision name='b1'><pose>0 0 0.6 0 0 0</pose>
+          <geometry><cylinder><radius>0.32</radius><length>1.2</length></cylinder></geometry></collision>
+        <visual name='b1v'><pose>0 0 0.6 0 0 0</pose>
+          <geometry><cylinder><radius>0.32</radius><length>1.2</length></cylinder></geometry>
+          <material><ambient>0.60 0.15 0.10 1</ambient><diffuse>0.70 0.18 0.12 1</diffuse></material>
+        </visual>
+        <collision name='b2'><pose>0.58 0.15 0.6 0 0 0</pose>
+          <geometry><cylinder><radius>0.32</radius><length>1.2</length></cylinder></geometry></collision>
+        <visual name='b2v'><pose>0.58 0.15 0.6 0 0 0</pose>
+          <geometry><cylinder><radius>0.32</radius><length>1.2</length></cylinder></geometry>
+          <material><ambient>0.55 0.55 0.10 1</ambient><diffuse>0.65 0.60 0.12 1</diffuse></material>
+        </visual>
+        <collision name='b3'><pose>0.25 -0.50 0.6 0 0 0</pose>
+          <geometry><cylinder><radius>0.32</radius><length>1.2</length></cylinder></geometry></collision>
+        <visual name='b3v'><pose>0.25 -0.50 0.6 0 0 0</pose>
+          <geometry><cylinder><radius>0.32</radius><length>1.2</length></cylinder></geometry>
+          <material><ambient>0.20 0.35 0.20 1</ambient><diffuse>0.25 0.40 0.22 1</diffuse></material>
+        </visual>
+        <!-- One barrel stacked on top -->
+        <collision name='b4'><pose>0.25 0.0 1.5 0 0 0</pose>
+          <geometry><cylinder><radius>0.30</radius><length>0.6</length></cylinder></geometry></collision>
+        <visual name='b4v'><pose>0.25 0.0 1.5 0 0 0</pose>
+          <geometry><cylinder><radius>0.30</radius><length>0.6</length></cylinder></geometry>
+          <material><ambient>0.60 0.15 0.10 1</ambient><diffuse>0.70 0.18 0.12 1</diffuse></material>
+        </visual>
+      </link>
+      <pose>34.0 0.5 0.0 0 0 0</pose>
+    </model>
+
+    <!-- ── Pipe stack: X=39, Y=2.5 (right wall side) — tall pyramid of pipes ── -->
+    <model name='pipe_stack_01'>
+      <static>1</static>
+      <link name='link'>
+        <!-- Bottom row: 3 pipes -->
+        <collision name='p1'><pose>0 -0.40 0.22 0 1.5708 0</pose>
+          <geometry><cylinder><radius>0.22</radius><length>2.5</length></cylinder></geometry></collision>
+        <visual name='p1v'><pose>0 -0.40 0.22 0 1.5708 0</pose>
+          <geometry><cylinder><radius>0.22</radius><length>2.5</length></cylinder></geometry>
+          <material><ambient>0.40 0.40 0.42 1</ambient><diffuse>0.50 0.50 0.52 1</diffuse></material>
+        </visual>
+        <collision name='p2'><pose>0 0.0 0.22 0 1.5708 0</pose>
+          <geometry><cylinder><radius>0.22</radius><length>2.5</length></cylinder></geometry></collision>
+        <visual name='p2v'><pose>0 0.0 0.22 0 1.5708 0</pose>
+          <geometry><cylinder><radius>0.22</radius><length>2.5</length></cylinder></geometry>
+          <material><ambient>0.40 0.40 0.42 1</ambient><diffuse>0.50 0.50 0.52 1</diffuse></material>
+        </visual>
+        <collision name='p3'><pose>0 0.40 0.22 0 1.5708 0</pose>
+          <geometry><cylinder><radius>0.22</radius><length>2.5</length></cylinder></geometry></collision>
+        <visual name='p3v'><pose>0 0.40 0.22 0 1.5708 0</pose>
+          <geometry><cylinder><radius>0.22</radius><length>2.5</length></cylinder></geometry>
+          <material><ambient>0.40 0.40 0.42 1</ambient><diffuse>0.50 0.50 0.52 1</diffuse></material>
+        </visual>
+        <!-- Middle row: 2 pipes -->
+        <collision name='p4'><pose>0 -0.20 0.60 0 1.5708 0</pose>
+          <geometry><cylinder><radius>0.22</radius><length>2.5</length></cylinder></geometry></collision>
+        <visual name='p4v'><pose>0 -0.20 0.60 0 1.5708 0</pose>
+          <geometry><cylinder><radius>0.22</radius><length>2.5</length></cylinder></geometry>
+          <material><ambient>0.45 0.30 0.15 1</ambient><diffuse>0.55 0.35 0.18 1</diffuse></material>
+        </visual>
+        <collision name='p5'><pose>0 0.20 0.60 0 1.5708 0</pose>
+          <geometry><cylinder><radius>0.22</radius><length>2.5</length></cylinder></geometry></collision>
+        <visual name='p5v'><pose>0 0.20 0.60 0 1.5708 0</pose>
+          <geometry><cylinder><radius>0.22</radius><length>2.5</length></cylinder></geometry>
+          <material><ambient>0.45 0.30 0.15 1</ambient><diffuse>0.55 0.35 0.18 1</diffuse></material>
+        </visual>
+        <!-- Top row: 1 pipe -->
+        <collision name='p6'><pose>0 0.0 0.98 0 1.5708 0</pose>
+          <geometry><cylinder><radius>0.22</radius><length>2.5</length></cylinder></geometry></collision>
+        <visual name='p6v'><pose>0 0.0 0.98 0 1.5708 0</pose>
+          <geometry><cylinder><radius>0.22</radius><length>2.5</length></cylinder></geometry>
+          <material><ambient>0.40 0.40 0.42 1</ambient><diffuse>0.50 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <pose>39.0 2.5 0.0 0 0 0</pose>
+    </model>
+
+    <!-- ── Ventilation duct: X=44, Y=-0.2 — on centreline at drone height ── -->
+    <model name='vent_duct_01'>
+      <static>1</static>
+      <link name='link'>
+        <collision name='c'><pose>0 0 0 0 1.5708 0</pose>
+          <geometry><cylinder><radius>0.50</radius><length>3.5</length></cylinder></geometry></collision>
+        <visual name='v'><pose>0 0 0 0 1.5708 0</pose>
+          <geometry><cylinder><radius>0.50</radius><length>3.5</length></cylinder></geometry>
+          <material><ambient>0.50 0.50 0.52 1</ambient><diffuse>0.60 0.60 0.63 1</diffuse></material>
+        </visual>
+        <!-- Support bracket -->
+        <visual name='bracket1'><pose>-1.2 0 -0.6 0 0 0</pose>
+          <geometry><box><size>0.10 0.10 1.2</size></box></geometry>
+          <material><ambient>0.30 0.30 0.32 1</ambient></material></visual>
+        <collision name='br1'><pose>-1.2 0 -0.6 0 0 0</pose>
+          <geometry><box><size>0.10 0.10 1.2</size></box></geometry></collision>
+        <visual name='bracket2'><pose>1.2 0 -0.6 0 0 0</pose>
+          <geometry><box><size>0.10 0.10 1.2</size></box></geometry>
+          <material><ambient>0.30 0.30 0.32 1</ambient></material></visual>
+        <collision name='br2'><pose>1.2 0 -0.6 0 0 0</pose>
+          <geometry><box><size>0.10 0.10 1.2</size></box></geometry></collision>
+      </link>
+      <pose>44.0 -0.2 1.3 0 0 0</pose>
+    </model>
+
+    <!-- ── Rubble mound: X=48, Y=-2.5 (left wall) ── -->
+    <model name='rubble_01'>
+      <static>1</static>
+      <link name='link'>
+        <collision name='c'><geometry><box><size>2.0 1.4 1.6</size></box></geometry></collision>
+        <visual name='v'><geometry><box><size>2.0 1.4 1.6</size></box></geometry>
+          <material><ambient>0.30 0.28 0.22 1</ambient><diffuse>0.35 0.32 0.25 1</diffuse></material>
+        </visual>
+      </link>
+      <pose>48.0 -2.5 0.8 0 0 0.08</pose>
+    </model>
+
+    <!-- ── Fallen timber X-beam: X=53, Y=0 — right across centre at flight height ── -->
+    <model name='timber_beam_02'>
+      <static>1</static>
+      <link name='link'>
+        <collision name='c'><geometry><box><size>0.30 4.0 0.30</size></box></geometry></collision>
+        <visual name='v'><geometry><box><size>0.30 4.0 0.30</size></box></geometry>
+          <material><ambient>0.50 0.35 0.15 1</ambient><diffuse>0.60 0.42 0.18 1</diffuse></material>
+        </visual>
+      </link>
+      <pose>53.0 0.0 1.5 0 0 0.05</pose>
+    </model>
+
+    <!-- ── Rock boulder: X=57, Y=2.0 (right side) ── -->
+    <model name='rock_boulder_01'>
+      <static>1</static>
+      <link name='link'>
+        <collision name='c'><geometry><sphere><radius>0.85</radius></sphere></geometry></collision>
+        <visual name='v'><geometry><sphere><radius>0.85</radius></sphere></geometry>
+          <material><ambient>0.28 0.25 0.20 1</ambient><diffuse>0.35 0.30 0.24 1</diffuse></material>
+        </visual>
+      </link>
+      <pose>57.0 2.0 0.85 0 0 0</pose>
+    </model>
+
+    <!-- ── Mine cart #2: X=61, Y=-0.5 — near centreline ── -->
+    <model name='mine_cart_02'>
+      <static>1</static>
+      <link name='link'>
+        <collision name='cart_body'><pose>0 0 0.7 0 0 0</pose>
+          <geometry><box><size>1.8 1.2 1.4</size></box></geometry></collision>
+        <visual name='cart_body_v'><pose>0 0 0.7 0 0 0</pose>
+          <geometry><box><size>1.8 1.2 1.4</size></box></geometry>
+          <material><ambient>0.32 0.28 0.22 1</ambient><diffuse>0.38 0.32 0.25 1</diffuse></material>
+        </visual>
+        <!-- Heaped ore -->
+        <visual name='ore'><pose>0 0 1.5 0 0 0</pose>
+          <geometry><box><size>1.4 0.9 0.2</size></box></geometry>
+          <material><ambient>0.22 0.18 0.14 1</ambient><diffuse>0.30 0.24 0.18 1</diffuse></material>
+        </visual>
+        <collision name='ore_c'><pose>0 0 1.5 0 0 0</pose>
+          <geometry><box><size>1.4 0.9 0.2</size></box></geometry></collision>
+        <visual name='wfl'><pose>0.6 0.65 0.15 1.5708 0 0</pose>
+          <geometry><cylinder><radius>0.15</radius><length>0.08</length></cylinder></geometry>
+          <material><ambient>0.15 0.15 0.15 1</ambient></material></visual>
+        <visual name='wfr'><pose>0.6 -0.65 0.15 1.5708 0 0</pose>
+          <geometry><cylinder><radius>0.15</radius><length>0.08</length></cylinder></geometry>
+          <material><ambient>0.15 0.15 0.15 1</ambient></material></visual>
+        <visual name='wrl'><pose>-0.6 0.65 0.15 1.5708 0 0</pose>
+          <geometry><cylinder><radius>0.15</radius><length>0.08</length></cylinder></geometry>
+          <material><ambient>0.15 0.15 0.15 1</ambient></material></visual>
+        <visual name='wrr'><pose>-0.6 -0.65 0.15 1.5708 0 0</pose>
+          <geometry><cylinder><radius>0.15</radius><length>0.08</length></cylinder></geometry>
+          <material><ambient>0.15 0.15 0.15 1</ambient></material></visual>
+      </link>
+      <pose>61.0 -0.5 0.0 0 0 0</pose>
+    </model>
+
+    <!-- ── Equipment crate: X=66, Y=-1.5 — tall crate ── -->
+    <model name='crate_02'>
+      <static>1</static>
+      <link name='link'>
+        <collision name='c'><pose>0 0 0.8 0 0 0</pose>
+          <geometry><box><size>1.0 1.0 1.6</size></box></geometry></collision>
+        <visual name='v'><pose>0 0 0.8 0 0 0</pose>
+          <geometry><box><size>1.0 1.0 1.6</size></box></geometry>
+          <material><ambient>0.45 0.38 0.18 1</ambient><diffuse>0.52 0.44 0.22 1</diffuse></material>
+        </visual>
+      </link>
+      <pose>66.0 -1.5 0.0 0 0 0.12</pose>
+    </model>
+
+    <!-- ── Rock pile #2: X=71, Y=0.2 — on centreline, tall ── -->
+    <model name='rock_pile_02'>
+      <static>1</static>
+      <link name='link'>
+        <collision name='c'><geometry><box><size>1.8 1.6 1.8</size></box></geometry></collision>
+        <visual name='v'><geometry><box><size>1.8 1.6 1.8</size></box></geometry>
+          <material><ambient>0.28 0.24 0.18 1</ambient><diffuse>0.33 0.28 0.22 1</diffuse></material>
+        </visual>
+      </link>
+      <pose>71.0 0.2 0.9 0 0 -0.1</pose>
+    </model>
+
+    <!-- ── Barrel pair + stacked: X=77, Y=-2.5 (left wall) ── -->
+    <model name='barrel_pair_01'>
+      <static>1</static>
+      <link name='link'>
+        <collision name='b1'><pose>0 0 0.6 0 0 0</pose>
+          <geometry><cylinder><radius>0.32</radius><length>1.2</length></cylinder></geometry></collision>
+        <visual name='b1v'><pose>0 0 0.6 0 0 0</pose>
+          <geometry><cylinder><radius>0.32</radius><length>1.2</length></cylinder></geometry>
+          <material><ambient>0.15 0.30 0.55 1</ambient><diffuse>0.20 0.38 0.65 1</diffuse></material>
+        </visual>
+        <collision name='b2'><pose>0.58 0.0 0.6 0 0 0</pose>
+          <geometry><cylinder><radius>0.32</radius><length>1.2</length></cylinder></geometry></collision>
+        <visual name='b2v'><pose>0.58 0.0 0.6 0 0 0</pose>
+          <geometry><cylinder><radius>0.32</radius><length>1.2</length></cylinder></geometry>
+          <material><ambient>0.15 0.30 0.55 1</ambient><diffuse>0.20 0.38 0.65 1</diffuse></material>
+        </visual>
+        <!-- One on top -->
+        <collision name='b3'><pose>0.28 0.0 1.55 0 0 0</pose>
+          <geometry><cylinder><radius>0.30</radius><length>0.6</length></cylinder></geometry></collision>
+        <visual name='b3v'><pose>0.28 0.0 1.55 0 0 0</pose>
+          <geometry><cylinder><radius>0.30</radius><length>0.6</length></cylinder></geometry>
+          <material><ambient>0.15 0.30 0.55 1</ambient><diffuse>0.20 0.38 0.65 1</diffuse></material>
+        </visual>
+      </link>
+      <pose>77.0 -2.5 0.0 0 0 0</pose>
+    </model>
+
+    <!-- ── Timber support frame (A-frame): X=82, Y=1.5 ── -->
+    <model name='timber_frame_01'>
+      <static>1</static>
+      <link name='link'>
+        <collision name='lp'><pose>0 -0.6 1.0 0 0 0</pose>
+          <geometry><box><size>0.20 0.20 2.0</size></box></geometry></collision>
+        <visual name='lpv'><pose>0 -0.6 1.0 0 0 0</pose>
+          <geometry><box><size>0.20 0.20 2.0</size></box></geometry>
+          <material><ambient>0.50 0.35 0.15 1</ambient><diffuse>0.60 0.42 0.18 1</diffuse></material>
+        </visual>
+        <collision name='rp'><pose>0 0.6 1.0 0 0 0</pose>
+          <geometry><box><size>0.20 0.20 2.0</size></box></geometry></collision>
+        <visual name='rpv'><pose>0 0.6 1.0 0 0 0</pose>
+          <geometry><box><size>0.20 0.20 2.0</size></box></geometry>
+          <material><ambient>0.50 0.35 0.15 1</ambient><diffuse>0.60 0.42 0.18 1</diffuse></material>
+        </visual>
+        <collision name='cb'><pose>0 0.0 2.05 0 0 0</pose>
+          <geometry><box><size>0.20 1.4 0.20</size></box></geometry></collision>
+        <visual name='cbv'><pose>0 0.0 2.05 0 0 0</pose>
+          <geometry><box><size>0.20 1.4 0.20</size></box></geometry>
+          <material><ambient>0.50 0.35 0.15 1</ambient><diffuse>0.60 0.42 0.18 1</diffuse></material>
+        </visual>
+      </link>
+      <pose>82.0 1.5 0.0 0 0 0</pose>
+    </model>
+
+    <!-- ── Rock rubble spread: X=87, Y=0.8 — near centreline, tall ── -->
+    <model name='rubble_02'>
+      <static>1</static>
+      <link name='link'>
+        <collision name='c'><geometry><box><size>1.5 1.8 1.5</size></box></geometry></collision>
+        <visual name='v'><geometry><box><size>1.5 1.8 1.5</size></box></geometry>
+          <material><ambient>0.32 0.28 0.20 1</ambient><diffuse>0.38 0.33 0.24 1</diffuse></material>
+        </visual>
+      </link>
+      <pose>87.0 0.8 0.75 0 0 0.2</pose>
+    </model>
+
+    <!-- ── Crate + barrel combo: X=93, Y=-2.0 — stacked tall ── -->
+    <model name='crate_barrel_01'>
+      <static>1</static>
+      <link name='link'>
+        <collision name='crate'><pose>0 0 0.6 0 0 0</pose>
+          <geometry><box><size>1.0 0.8 1.2</size></box></geometry></collision>
+        <visual name='cratev'><pose>0 0 0.6 0 0 0</pose>
+          <geometry><box><size>1.0 0.8 1.2</size></box></geometry>
+          <material><ambient>0.45 0.38 0.18 1</ambient><diffuse>0.52 0.44 0.22 1</diffuse></material>
+        </visual>
+        <collision name='barrel'><pose>0.7 0.0 0.6 0 0 0</pose>
+          <geometry><cylinder><radius>0.30</radius><length>1.2</length></cylinder></geometry></collision>
+        <visual name='barrelv'><pose>0.7 0.0 0.6 0 0 0</pose>
+          <geometry><cylinder><radius>0.30</radius><length>1.2</length></cylinder></geometry>
+          <material><ambient>0.60 0.15 0.10 1</ambient><diffuse>0.70 0.18 0.12 1</diffuse></material>
+        </visual>
+        <!-- Small barrel on top of crate -->
+        <collision name='top_b'><pose>0 0 1.5 0 0 0</pose>
+          <geometry><cylinder><radius>0.28</radius><length>0.6</length></cylinder></geometry></collision>
+        <visual name='top_bv'><pose>0 0 1.5 0 0 0</pose>
+          <geometry><cylinder><radius>0.28</radius><length>0.6</length></cylinder></geometry>
+          <material><ambient>0.55 0.55 0.10 1</ambient><diffuse>0.65 0.60 0.12 1</diffuse></material>
+        </visual>
+      </link>
+      <pose>93.0 -2.0 0.0 0 0 0</pose>
+    </model>
+
+
+    <!-- ══════════════════════════════════════════════════════════════════
+         MINING ENVIRONMENT DETAILS (visual only — no collision impact)
+         Timber support frames, rails, pipe runs, cable trays, puddles
+         ══════════════════════════════════════════════════════════════════ -->
+
+    <!-- Timber support frames along tunnel every ~10m (visual atmosphere) -->
+    <model name='support_frame_10'>
+      <static>1</static>
+      <link name='link'>
+        <visual name='left_post'><pose>0 -3.8 2.0 0 0 0</pose>
+          <geometry><box><size>0.20 0.20 4.0</size></box></geometry>
+          <material><ambient>0.50 0.35 0.15 1</ambient><diffuse>0.60 0.42 0.18 1</diffuse></material></visual>
+        <visual name='right_post'><pose>0 3.8 2.0 0 0 0</pose>
+          <geometry><box><size>0.20 0.20 4.0</size></box></geometry>
+          <material><ambient>0.50 0.35 0.15 1</ambient><diffuse>0.60 0.42 0.18 1</diffuse></material></visual>
+        <visual name='crossbeam'><pose>0 0.0 3.9 0 0 0</pose>
+          <geometry><box><size>0.20 7.8 0.20</size></box></geometry>
+          <material><ambient>0.50 0.35 0.15 1</ambient><diffuse>0.60 0.42 0.18 1</diffuse></material></visual>
+      </link>
+      <pose>10.0 0 0 0 0 0</pose>
+    </model>
+
+    <model name='support_frame_30'>
+      <static>1</static>
+      <link name='link'>
+        <visual name='left_post'><pose>0 -3.8 2.0 0 0 0</pose>
+          <geometry><box><size>0.20 0.20 4.0</size></box></geometry>
+          <material><ambient>0.48 0.33 0.14 1</ambient><diffuse>0.58 0.40 0.17 1</diffuse></material></visual>
+        <visual name='right_post'><pose>0 3.8 2.0 0 0 0</pose>
+          <geometry><box><size>0.20 0.20 4.0</size></box></geometry>
+          <material><ambient>0.48 0.33 0.14 1</ambient><diffuse>0.58 0.40 0.17 1</diffuse></material></visual>
+        <visual name='crossbeam'><pose>0 0.0 3.9 0 0 0</pose>
+          <geometry><box><size>0.20 7.8 0.20</size></box></geometry>
+          <material><ambient>0.48 0.33 0.14 1</ambient><diffuse>0.58 0.40 0.17 1</diffuse></material></visual>
+      </link>
+      <pose>30.0 0 0 0 0 0</pose>
+    </model>
+
+    <model name='support_frame_50'>
+      <static>1</static>
+      <link name='link'>
+        <visual name='left_post'><pose>0 -3.8 2.0 0 0 0</pose>
+          <geometry><box><size>0.20 0.20 4.0</size></box></geometry>
+          <material><ambient>0.50 0.35 0.15 1</ambient><diffuse>0.60 0.42 0.18 1</diffuse></material></visual>
+        <visual name='right_post'><pose>0 3.8 2.0 0 0 0</pose>
+          <geometry><box><size>0.20 0.20 4.0</size></box></geometry>
+          <material><ambient>0.50 0.35 0.15 1</ambient><diffuse>0.60 0.42 0.18 1</diffuse></material></visual>
+        <visual name='crossbeam'><pose>0 0.0 3.9 0 0 0</pose>
+          <geometry><box><size>0.20 7.8 0.20</size></box></geometry>
+          <material><ambient>0.50 0.35 0.15 1</ambient><diffuse>0.60 0.42 0.18 1</diffuse></material></visual>
+      </link>
+      <pose>50.0 0 0 0 0 0</pose>
+    </model>
+
+    <model name='support_frame_70'>
+      <static>1</static>
+      <link name='link'>
+        <visual name='left_post'><pose>0 -3.8 2.0 0 0 0</pose>
+          <geometry><box><size>0.20 0.20 4.0</size></box></geometry>
+          <material><ambient>0.48 0.33 0.14 1</ambient><diffuse>0.58 0.40 0.17 1</diffuse></material></visual>
+        <visual name='right_post'><pose>0 3.8 2.0 0 0 0</pose>
+          <geometry><box><size>0.20 0.20 4.0</size></box></geometry>
+          <material><ambient>0.48 0.33 0.14 1</ambient><diffuse>0.58 0.40 0.17 1</diffuse></material></visual>
+        <visual name='crossbeam'><pose>0 0.0 3.9 0 0 0</pose>
+          <geometry><box><size>0.20 7.8 0.20</size></box></geometry>
+          <material><ambient>0.48 0.33 0.14 1</ambient><diffuse>0.58 0.40 0.17 1</diffuse></material></visual>
+      </link>
+      <pose>70.0 0 0 0 0 0</pose>
+    </model>
+
+    <model name='support_frame_90'>
+      <static>1</static>
+      <link name='link'>
+        <visual name='left_post'><pose>0 -3.8 2.0 0 0 0</pose>
+          <geometry><box><size>0.20 0.20 4.0</size></box></geometry>
+          <material><ambient>0.50 0.35 0.15 1</ambient><diffuse>0.60 0.42 0.18 1</diffuse></material></visual>
+        <visual name='right_post'><pose>0 3.8 2.0 0 0 0</pose>
+          <geometry><box><size>0.20 0.20 4.0</size></box></geometry>
+          <material><ambient>0.50 0.35 0.15 1</ambient><diffuse>0.60 0.42 0.18 1</diffuse></material></visual>
+        <visual name='crossbeam'><pose>0 0.0 3.9 0 0 0</pose>
+          <geometry><box><size>0.20 7.8 0.20</size></box></geometry>
+          <material><ambient>0.50 0.35 0.15 1</ambient><diffuse>0.60 0.42 0.18 1</diffuse></material></visual>
+      </link>
+      <pose>90.0 0 0 0 0 0</pose>
+    </model>
+
+    <!-- Rail tracks along tunnel floor -->
+    <model name='rail_left'>
+      <static>1</static>
+      <link name='link'>
+        <visual name='v'><pose>0 0 0.03 0 0 0</pose>
+          <geometry><box><size>100.0 0.08 0.06</size></box></geometry>
+          <material><ambient>0.45 0.40 0.35 1</ambient><diffuse>0.55 0.50 0.45 1</diffuse></material>
+        </visual>
+      </link>
+      <pose>50.0 -0.40 0.0 0 0 0</pose>
+    </model>
+
+    <model name='rail_right'>
+      <static>1</static>
+      <link name='link'>
+        <visual name='v'><pose>0 0 0.03 0 0 0</pose>
+          <geometry><box><size>100.0 0.08 0.06</size></box></geometry>
+          <material><ambient>0.45 0.40 0.35 1</ambient><diffuse>0.55 0.50 0.45 1</diffuse></material>
+        </visual>
+      </link>
+      <pose>50.0 0.40 0.0 0 0 0</pose>
+    </model>
+
+    <!-- Rail sleepers (cross-ties) every 2m -->
+    <model name='sleepers'>
+      <static>1</static>
+      <link name='link'>
+        <visual name='s1'><pose>-40 0 0.015 0 0 0</pose><geometry><box><size>0.15 1.2 0.03</size></box></geometry>
+          <material><ambient>0.40 0.28 0.12 1</ambient><diffuse>0.50 0.35 0.15 1</diffuse></material></visual>
+        <visual name='s2'><pose>-38 0 0.015 0 0 0</pose><geometry><box><size>0.15 1.2 0.03</size></box></geometry>
+          <material><ambient>0.40 0.28 0.12 1</ambient><diffuse>0.50 0.35 0.15 1</diffuse></material></visual>
+        <visual name='s3'><pose>-36 0 0.015 0 0 0</pose><geometry><box><size>0.15 1.2 0.03</size></box></geometry>
+          <material><ambient>0.40 0.28 0.12 1</ambient><diffuse>0.50 0.35 0.15 1</diffuse></material></visual>
+        <visual name='s4'><pose>-34 0 0.015 0 0 0</pose><geometry><box><size>0.15 1.2 0.03</size></box></geometry>
+          <material><ambient>0.40 0.28 0.12 1</ambient><diffuse>0.50 0.35 0.15 1</diffuse></material></visual>
+        <visual name='s5'><pose>-32 0 0.015 0 0 0</pose><geometry><box><size>0.15 1.2 0.03</size></box></geometry>
+          <material><ambient>0.40 0.28 0.12 1</ambient><diffuse>0.50 0.35 0.15 1</diffuse></material></visual>
+        <visual name='s6'><pose>-30 0 0.015 0 0 0</pose><geometry><box><size>0.15 1.2 0.03</size></box></geometry>
+          <material><ambient>0.40 0.28 0.12 1</ambient><diffuse>0.50 0.35 0.15 1</diffuse></material></visual>
+      </link>
+      <pose>50.0 0 0 0 0 0</pose>
+    </model>
+
+    <!-- Pipe run along left wall at height 2.5m -->
+    <model name='pipe_run_left'>
+      <static>1</static>
+      <link name='link'>
+        <visual name='pipe1'><pose>0 0 0 0 0 0</pose>
+          <geometry><cylinder><radius>0.08</radius><length>100.0</length></cylinder></geometry>
+          <cast_shadows>0</cast_shadows>
+          <material><ambient>0.50 0.45 0.10 1</ambient><diffuse>0.60 0.55 0.15 1</diffuse></material>
+        </visual>
+        <visual name='pipe2'><pose>0 0.25 0 0 0 0</pose>
+          <geometry><cylinder><radius>0.06</radius><length>100.0</length></cylinder></geometry>
+          <cast_shadows>0</cast_shadows>
+          <material><ambient>0.40 0.40 0.42 1</ambient><diffuse>0.50 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <pose>50.0 -3.6 2.5 1.5708 0 0</pose>
+    </model>
+
+    <!-- Cable tray / conduit along right wall -->
+    <model name='cable_tray'>
+      <static>1</static>
+      <link name='link'>
+        <visual name='tray'>
+          <geometry><box><size>100.0 0.20 0.08</size></box></geometry>
+          <material><ambient>0.25 0.25 0.28 1</ambient><diffuse>0.35 0.35 0.38 1</diffuse></material>
+        </visual>
+        <visual name='cables'><pose>0 0 0.06 0 0 0</pose>
+          <geometry><box><size>100.0 0.16 0.04</size></box></geometry>
+          <material><ambient>0.10 0.10 0.10 1</ambient><diffuse>0.15 0.15 0.15 1</diffuse></material>
+        </visual>
+      </link>
+      <pose>50.0 3.7 2.8 0 0 0</pose>
+    </model>
+
+    <!-- Water puddles on ground -->
+    <model name='puddle_01'>
+      <static>1</static>
+      <link name='link'>
+        <visual name='v'><geometry><box><size>2.5 1.8 0.005</size></box></geometry>
+          <material><ambient>0.15 0.18 0.25 1</ambient><diffuse>0.18 0.22 0.30 1</diffuse></material>
+        </visual>
+      </link>
+      <pose>22.0 -0.5 0.003 0 0 0.3</pose>
+    </model>
+
+    <model name='puddle_02'>
+      <static>1</static>
+      <link name='link'>
+        <visual name='v'><geometry><box><size>3.0 2.0 0.005</size></box></geometry>
+          <material><ambient>0.15 0.18 0.25 1</ambient><diffuse>0.18 0.22 0.30 1</diffuse></material>
+        </visual>
+      </link>
+      <pose>55.0 1.0 0.003 0 0 -0.2</pose>
+    </model>
+
+    <model name='puddle_03'>
+      <static>1</static>
+      <link name='link'>
+        <visual name='v'><geometry><box><size>2.0 2.5 0.005</size></box></geometry>
+          <material><ambient>0.15 0.18 0.25 1</ambient><diffuse>0.18 0.22 0.30 1</diffuse></material>
+        </visual>
+      </link>
+      <pose>80.0 -1.0 0.003 0 0 0.15</pose>
+    </model>
+
+    <!-- Warning signs on walls -->
+    <model name='warning_sign_1'>
+      <static>1</static>
+      <link name='link'>
+        <visual name='v'><geometry><box><size>0.02 0.6 0.6</size></box></geometry>
+          <material><ambient>0.70 0.60 0.05 1</ambient><diffuse>0.85 0.75 0.10 1</diffuse></material>
+        </visual>
+      </link>
+      <pose>15.0 3.95 2.0 0 0 0</pose>
+    </model>
+
+    <model name='warning_sign_2'>
+      <static>1</static>
+      <link name='link'>
+        <visual name='v'><geometry><box><size>0.02 0.6 0.6</size></box></geometry>
+          <material><ambient>0.70 0.60 0.05 1</ambient><diffuse>0.85 0.75 0.10 1</diffuse></material>
+        </visual>
+      </link>
+      <pose>55.0 -3.95 2.0 0 0 0</pose>
+    </model>
+
+    <model name='warning_sign_3'>
+      <static>1</static>
+      <link name='link'>
+        <visual name='v'><geometry><box><size>0.02 0.6 0.6</size></box></geometry>
+          <material><ambient>0.70 0.10 0.05 1</ambient><diffuse>0.85 0.12 0.08 1</diffuse></material>
+        </visual>
+      </link>
+      <pose>90.0 3.95 2.0 0 0 0</pose>
+    </model>
+
+
+    <!-- ══════════════════════════════════════════════════════════════════
+         PHYSICS — identical to tested working version
+         ══════════════════════════════════════════════════════════════════ -->
+
+    <physics type='ode'>
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1</real_time_factor>
+      <real_time_update_rate>1000</real_time_update_rate>
+    </physics>
+
+
+    <!-- ══════════════════════════════════════════════════════════════════
+         GROUND PLANE — bare rocky stone (grey-brown, no grass)
+         ══════════════════════════════════════════════════════════════════ -->
+
+    <model name='ground_plane'>
+      <static>1</static>
+      <link name='ground_link'>
+        <collision name='ground_collision'>
+          <pose>50 0 -0.5 0 0 0</pose>
+          <geometry><box><size>400 400 1.0</size></box></geometry>
+          <max_contacts>100</max_contacts>
+          <surface>
+            <contact><ode><soft_cfm>0</soft_cfm><soft_erp>0.8</soft_erp></ode></contact>
+            <bounce><restitution_coefficient>0</restitution_coefficient></bounce>
+            <friction><ode><mu>50</mu><mu2>50</mu2></ode></friction>
+          </surface>
+        </collision>
+        <!-- Dark slate rock ground — real excavated mining site, greenish-grey -->
+        <visual name='ground_visual'>
+          <pose>50 0 -0.5 0 0 0</pose>
+          <geometry><box><size>400 400 1.0</size></box></geometry>
+          <material>
+            <ambient>0.18 0.22 0.16 1</ambient>
+            <diffuse>0.22 0.27 0.20 1</diffuse>
+            <specular>0.04 0.05 0.04 1</specular>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Rocky mound left — dark charcoal schist with green mineral tint -->
+    <model name='rock_mound_left'>
+      <static>1</static>
+      <link name='link'>
+        <visual name='v'>
+          <geometry><box><size>6.0 4.0 2.5</size></box></geometry>
+          <material>
+            <ambient>0.20 0.24 0.18 1</ambient>
+            <diffuse>0.25 0.30 0.22 1</diffuse>
+            <specular>0.05 0.06 0.04 1</specular>
+          </material>
+        </visual>
+      </link>
+      <pose>-3.0 -5.5 1.25 0 0 0.3</pose>
+    </model>
+
+    <!-- Rocky mound right — slightly darker slate -->
+    <model name='rock_mound_right'>
+      <static>1</static>
+      <link name='link'>
+        <visual name='v'>
+          <geometry><box><size>5.0 4.5 2.0</size></box></geometry>
+          <material>
+            <ambient>0.16 0.20 0.15 1</ambient>
+            <diffuse>0.20 0.25 0.18 1</diffuse>
+            <specular>0.04 0.05 0.03 1</specular>
+          </material>
+        </visual>
+      </link>
+      <pose>-3.0 5.5 1.0 0 0 -0.25</pose>
+    </model>
+
+    <!-- Boulders at tunnel mouth — dark grey fractured rock -->
+    <model name='boulder_a'>
+      <static>1</static>
+      <link name='link'>
+        <visual name='v'>
+          <geometry><box><size>1.8 1.5 1.2</size></box></geometry>
+          <material>
+            <ambient>0.22 0.23 0.21 1</ambient>
+            <diffuse>0.28 0.29 0.26 1</diffuse>
+          </material>
+        </visual>
+      </link>
+      <pose>-5.0 2.5 0.6 0.1 0.05 0.4</pose>
+    </model>
+
+    <model name='boulder_b'>
+      <static>1</static>
+      <link name='link'>
+        <visual name='v'>
+          <geometry><box><size>1.2 1.0 0.9</size></box></geometry>
+          <material>
+            <ambient>0.19 0.22 0.17 1</ambient>
+            <diffuse>0.24 0.28 0.22 1</diffuse>
+          </material>
+        </visual>
+      </link>
+      <pose>-4.5 -3.0 0.45 0 0.1 -0.3</pose>
+    </model>
+
+    <model name='boulder_c'>
+      <static>1</static>
+      <link name='link'>
+        <visual name='v'>
+          <geometry><box><size>0.9 0.8 0.7</size></box></geometry>
+          <material>
+            <ambient>0.24 0.25 0.22 1</ambient>
+            <diffuse>0.30 0.31 0.28 1</diffuse>
+          </material>
+        </visual>
+      </link>
+      <pose>-6.0 0.5 0.35 0.05 0 0.6</pose>
+    </model>
+
+
+    <!-- ══════════════════════════════════════════════════════════════════
+         SCENE — normal outdoor lighting; tunnel mesh blocks sun inside
+         ══════════════════════════════════════════════════════════════════ -->
+
+    <scene>
+      <ambient>0.45 0.46 0.44 1</ambient>
+      <background>0.18 0.20 0.16 1</background>
+      <shadows>0</shadows>
+    </scene>
+
+
+    <!-- ══════════════════════════════════════════════════════════════════
+         LIGHTING — maximum brightness tunnel illumination
+         Dense lamp grid every 5 m, full-power diffuse, minimal attenuation
+         ══════════════════════════════════════════════════════════════════ -->
+
+    <!-- Outdoor sun -->
+    <light name='sun' type='directional'>
+      <cast_shadows>0</cast_shadows>
+      <pose>50 0 50 0 0 0</pose>
+      <diffuse>1.0 0.95 0.85 1</diffuse>
+      <specular>0.5 0.48 0.40 1</specular>
+      <attenuation><range>1000</range><constant>0.9</constant><linear>0.01</linear><quadratic>0.001</quadratic></attenuation>
+      <direction>-0.3 0.0 -0.95</direction>
+    </light>
+
+    <!-- Strong directional fill shooting down the tunnel from entrance end -->
+    <light name='tunnel_fill_fwd' type='directional'>
+      <cast_shadows>0</cast_shadows>
+      <pose>0 0 3 0 0 0</pose>
+      <diffuse>1.0 0.95 0.82 1</diffuse>
+      <specular>0.50 0.48 0.40 1</specular>
+      <attenuation><range>1000</range><constant>0.9</constant><linear>0.01</linear><quadratic>0.001</quadratic></attenuation>
+      <direction>1.0 0.0 -0.25</direction>
+    </light>
+
+    <!-- Strong directional fill shooting back down from exit end -->
+    <light name='tunnel_fill_rev' type='directional'>
+      <cast_shadows>0</cast_shadows>
+      <pose>100 0 3 0 0 0</pose>
+      <diffuse>1.0 0.95 0.82 1</diffuse>
+      <specular>0.50 0.48 0.40 1</specular>
+      <attenuation><range>1000</range><constant>0.9</constant><linear>0.01</linear><quadratic>0.001</quadratic></attenuation>
+      <direction>-1.0 0.0 -0.25</direction>
+    </light>
+
+    <!-- Overhead fill — straight down, floods floor and tops of obstacles -->
+    <light name='tunnel_fill_down' type='directional'>
+      <cast_shadows>0</cast_shadows>
+      <pose>50 0 10 0 0 0</pose>
+      <diffuse>0.90 0.86 0.75 1</diffuse>
+      <specular>0.35 0.33 0.28 1</specular>
+      <attenuation><range>1000</range><constant>0.9</constant><linear>0.01</linear><quadratic>0.001</quadratic></attenuation>
+      <direction>0.0 0.0 -1.0</direction>
+    </light>
+
+    <!-- ── TUNNEL LAMPS — every 5 m, alternating sides, maximum power ── -->
+
+    <light name='lamp_05' type='point'>
+      <cast_shadows>0</cast_shadows>
+      <pose>5.0 0.0 3.8 0 0 0</pose>
+      <diffuse>2.0 1.85 1.40 1</diffuse>
+      <specular>0.60 0.55 0.40 1</specular>
+      <attenuation><range>40</range><constant>0.05</constant><linear>0.01</linear><quadratic>0.001</quadratic></attenuation>
+    </light>
+
+    <light name='lamp_10' type='point'>
+      <cast_shadows>0</cast_shadows>
+      <pose>10.0 3.5 3.5 0 0 0</pose>
+      <diffuse>2.0 1.85 1.40 1</diffuse>
+      <specular>0.60 0.55 0.40 1</specular>
+      <attenuation><range>40</range><constant>0.05</constant><linear>0.01</linear><quadratic>0.001</quadratic></attenuation>
+    </light>
+
+    <light name='lamp_15' type='point'>
+      <cast_shadows>0</cast_shadows>
+      <pose>15.0 -3.5 3.5 0 0 0</pose>
+      <diffuse>2.0 1.85 1.40 1</diffuse>
+      <specular>0.60 0.55 0.40 1</specular>
+      <attenuation><range>40</range><constant>0.05</constant><linear>0.01</linear><quadratic>0.001</quadratic></attenuation>
+    </light>
+
+    <light name='lamp_20' type='point'>
+      <cast_shadows>0</cast_shadows>
+      <pose>20.0 3.5 3.5 0 0 0</pose>
+      <diffuse>2.0 1.85 1.40 1</diffuse>
+      <specular>0.60 0.55 0.40 1</specular>
+      <attenuation><range>40</range><constant>0.05</constant><linear>0.01</linear><quadratic>0.001</quadratic></attenuation>
+    </light>
+
+    <light name='lamp_25' type='point'>
+      <cast_shadows>0</cast_shadows>
+      <pose>25.0 -3.5 3.5 0 0 0</pose>
+      <diffuse>2.0 1.85 1.40 1</diffuse>
+      <specular>0.60 0.55 0.40 1</specular>
+      <attenuation><range>40</range><constant>0.05</constant><linear>0.01</linear><quadratic>0.001</quadratic></attenuation>
+    </light>
+
+    <light name='lamp_30' type='point'>
+      <cast_shadows>0</cast_shadows>
+      <pose>30.0 3.5 3.5 0 0 0</pose>
+      <diffuse>2.0 1.85 1.40 1</diffuse>
+      <specular>0.60 0.55 0.40 1</specular>
+      <attenuation><range>40</range><constant>0.05</constant><linear>0.01</linear><quadratic>0.001</quadratic></attenuation>
+    </light>
+
+    <light name='lamp_35' type='point'>
+      <cast_shadows>0</cast_shadows>
+      <pose>35.0 -3.5 3.5 0 0 0</pose>
+      <diffuse>2.0 1.85 1.40 1</diffuse>
+      <specular>0.60 0.55 0.40 1</specular>
+      <attenuation><range>40</range><constant>0.05</constant><linear>0.01</linear><quadratic>0.001</quadratic></attenuation>
+    </light>
+
+    <light name='lamp_40' type='point'>
+      <cast_shadows>0</cast_shadows>
+      <pose>40.0 3.5 3.5 0 0 0</pose>
+      <diffuse>2.0 1.85 1.40 1</diffuse>
+      <specular>0.60 0.55 0.40 1</specular>
+      <attenuation><range>40</range><constant>0.05</constant><linear>0.01</linear><quadratic>0.001</quadratic></attenuation>
+    </light>
+
+    <light name='lamp_45' type='point'>
+      <cast_shadows>0</cast_shadows>
+      <pose>45.0 -3.5 3.5 0 0 0</pose>
+      <diffuse>2.0 1.85 1.40 1</diffuse>
+      <specular>0.60 0.55 0.40 1</specular>
+      <attenuation><range>40</range><constant>0.05</constant><linear>0.01</linear><quadratic>0.001</quadratic></attenuation>
+    </light>
+
+    <light name='lamp_50' type='point'>
+      <cast_shadows>0</cast_shadows>
+      <pose>50.0 3.5 3.5 0 0 0</pose>
+      <diffuse>2.0 1.85 1.40 1</diffuse>
+      <specular>0.60 0.55 0.40 1</specular>
+      <attenuation><range>40</range><constant>0.05</constant><linear>0.01</linear><quadratic>0.001</quadratic></attenuation>
+    </light>
+
+    <light name='lamp_55' type='point'>
+      <cast_shadows>0</cast_shadows>
+      <pose>55.0 -3.5 3.5 0 0 0</pose>
+      <diffuse>2.0 1.85 1.40 1</diffuse>
+      <specular>0.60 0.55 0.40 1</specular>
+      <attenuation><range>40</range><constant>0.05</constant><linear>0.01</linear><quadratic>0.001</quadratic></attenuation>
+    </light>
+
+    <light name='lamp_60' type='point'>
+      <cast_shadows>0</cast_shadows>
+      <pose>60.0 3.5 3.5 0 0 0</pose>
+      <diffuse>2.0 1.85 1.40 1</diffuse>
+      <specular>0.60 0.55 0.40 1</specular>
+      <attenuation><range>40</range><constant>0.05</constant><linear>0.01</linear><quadratic>0.001</quadratic></attenuation>
+    </light>
+
+    <light name='lamp_65' type='point'>
+      <cast_shadows>0</cast_shadows>
+      <pose>65.0 -3.5 3.5 0 0 0</pose>
+      <diffuse>2.0 1.85 1.40 1</diffuse>
+      <specular>0.60 0.55 0.40 1</specular>
+      <attenuation><range>40</range><constant>0.05</constant><linear>0.01</linear><quadratic>0.001</quadratic></attenuation>
+    </light>
+
+    <light name='lamp_70' type='point'>
+      <cast_shadows>0</cast_shadows>
+      <pose>70.0 3.5 3.5 0 0 0</pose>
+      <diffuse>2.0 1.85 1.40 1</diffuse>
+      <specular>0.60 0.55 0.40 1</specular>
+      <attenuation><range>40</range><constant>0.05</constant><linear>0.01</linear><quadratic>0.001</quadratic></attenuation>
+    </light>
+
+    <light name='lamp_75' type='point'>
+      <cast_shadows>0</cast_shadows>
+      <pose>75.0 -3.5 3.5 0 0 0</pose>
+      <diffuse>2.0 1.85 1.40 1</diffuse>
+      <specular>0.60 0.55 0.40 1</specular>
+      <attenuation><range>40</range><constant>0.05</constant><linear>0.01</linear><quadratic>0.001</quadratic></attenuation>
+    </light>
+
+    <light name='lamp_80' type='point'>
+      <cast_shadows>0</cast_shadows>
+      <pose>80.0 3.5 3.5 0 0 0</pose>
+      <diffuse>2.0 1.85 1.40 1</diffuse>
+      <specular>0.60 0.55 0.40 1</specular>
+      <attenuation><range>40</range><constant>0.05</constant><linear>0.01</linear><quadratic>0.001</quadratic></attenuation>
+    </light>
+
+    <light name='lamp_85' type='point'>
+      <cast_shadows>0</cast_shadows>
+      <pose>85.0 -3.5 3.5 0 0 0</pose>
+      <diffuse>2.0 1.85 1.40 1</diffuse>
+      <specular>0.60 0.55 0.40 1</specular>
+      <attenuation><range>40</range><constant>0.05</constant><linear>0.01</linear><quadratic>0.001</quadratic></attenuation>
+    </light>
+
+    <light name='lamp_90' type='point'>
+      <cast_shadows>0</cast_shadows>
+      <pose>90.0 3.5 3.5 0 0 0</pose>
+      <diffuse>2.0 1.85 1.40 1</diffuse>
+      <specular>0.60 0.55 0.40 1</specular>
+      <attenuation><range>40</range><constant>0.05</constant><linear>0.01</linear><quadratic>0.001</quadratic></attenuation>
+    </light>
+
+    <light name='lamp_95' type='point'>
+      <cast_shadows>0</cast_shadows>
+      <pose>95.0 0.0 3.8 0 0 0</pose>
+      <diffuse>2.0 1.85 1.40 1</diffuse>
+      <specular>0.60 0.55 0.40 1</specular>
+      <attenuation><range>40</range><constant>0.05</constant><linear>0.01</linear><quadratic>0.001</quadratic></attenuation>
+    </light>
+
+    <!-- Centre-line fill lamps — flood the middle of the tunnel floor -->
+    <light name='fill_20' type='point'>
+      <cast_shadows>0</cast_shadows>
+      <pose>20.0 0.0 2.0 0 0 0</pose>
+      <diffuse>1.50 1.40 1.10 1</diffuse>
+      <specular>0.40 0.38 0.28 1</specular>
+      <attenuation><range>30</range><constant>0.05</constant><linear>0.02</linear><quadratic>0.002</quadratic></attenuation>
+    </light>
+
+    <light name='fill_40' type='point'>
+      <cast_shadows>0</cast_shadows>
+      <pose>40.0 0.0 2.0 0 0 0</pose>
+      <diffuse>1.50 1.40 1.10 1</diffuse>
+      <specular>0.40 0.38 0.28 1</specular>
+      <attenuation><range>30</range><constant>0.05</constant><linear>0.02</linear><quadratic>0.002</quadratic></attenuation>
+    </light>
+
+    <light name='fill_60' type='point'>
+      <cast_shadows>0</cast_shadows>
+      <pose>60.0 0.0 2.0 0 0 0</pose>
+      <diffuse>1.50 1.40 1.10 1</diffuse>
+      <specular>0.40 0.38 0.28 1</specular>
+      <attenuation><range>30</range><constant>0.05</constant><linear>0.02</linear><quadratic>0.002</quadratic></attenuation>
+    </light>
+
+    <light name='fill_80' type='point'>
+      <cast_shadows>0</cast_shadows>
+      <pose>80.0 0.0 2.0 0 0 0</pose>
+      <diffuse>1.50 1.40 1.10 1</diffuse>
+      <specular>0.40 0.38 0.28 1</specular>
+      <attenuation><range>30</range><constant>0.05</constant><linear>0.02</linear><quadratic>0.002</quadratic></attenuation>
+    </light>
+
+
+    <!-- ══════════════════════════════════════════════════════════════════
+         TUNNEL MESH — two segments (~50 m each) with dark rock material
+         Slightly darkened vs outside but clearly visible with mine lamps
+         ══════════════════════════════════════════════════════════════════ -->
+
+    <model name='tunnel_straight_1'>
+      <static>1</static>
+      <link name='link'>
+        <collision name='collision'>
+          <geometry><mesh><uri>model://tunnel_straight/meshes/tunnel_straight.dae</uri></mesh></geometry>
+        </collision>
+        <visual name='visual'>
+          <geometry><mesh><uri>model://tunnel_straight/meshes/tunnel_straight.dae</uri></mesh></geometry>
+          <material>
+            <ambient>0.88 0.85 0.78 1</ambient>
+            <diffuse>0.95 0.92 0.85 1</diffuse>
+          </material>
+        </visual>
+      </link>
+      <pose>0 0 0 0 0 0</pose>
+    </model>
+
+    <model name='tunnel_straight_2'>
+      <static>1</static>
+      <link name='link'>
+        <collision name='collision'>
+          <geometry><mesh><uri>model://tunnel_straight/meshes/tunnel_straight.dae</uri></mesh></geometry>
+        </collision>
+        <visual name='visual'>
+          <geometry><mesh><uri>model://tunnel_straight/meshes/tunnel_straight.dae</uri></mesh></geometry>
+          <material>
+            <ambient>0.88 0.85 0.78 1</ambient>
+            <diffuse>0.95 0.92 0.85 1</diffuse>
+          </material>
+        </visual>
+      </link>
+      <pose>50 0 0 0 0 0</pose>
+    </model>
+
+    <!-- End wall — solid rock face -->
+    <model name='tunnel_end_wall'>
+      <static>1</static>
+      <link name='link'>
+        <collision name='collision'>
+          <geometry><box><size>0.15 9.15 8.5</size></box></geometry>
+        </collision>
+        <visual name='visual'>
+          <geometry><box><size>0.15 9.15 8.5</size></box></geometry>
+          <material>
+            <ambient>0.85 0.82 0.76 1</ambient>
+            <diffuse>0.92 0.90 0.83 1</diffuse>
+          </material>
+        </visual>
+      </link>
+      <pose>100 0 4.25 0 0 0</pose>
+    </model>
+
+    <!-- Dark rocky tunnel floor — lies just above ground plane inside tunnel -->
+    <model name='tunnel_floor'>
+      <static>1</static>
+      <link name='link'>
+        <visual name='visual'>
+          <pose>50 0 0.005 0 0 0</pose>
+          <geometry><box><size>100 7.4 0.01</size></box></geometry>
+          <material>
+            <ambient>0.16 0.14 0.12 1</ambient>
+            <diffuse>0.20 0.17 0.14 1</diffuse>
+            <specular>0.03 0.02 0.02 1</specular>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+  </world>
+</sdf>

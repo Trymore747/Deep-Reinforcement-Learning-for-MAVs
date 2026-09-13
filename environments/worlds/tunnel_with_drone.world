@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <world name="default">
+    <include>
+      <uri>model://sun</uri>
+    </include>
+    
+    <!-- Include the tunnel -->
+    <include>
+      <uri>model://tunnel_straight</uri>
+      <pose>25 0 0 0 0 0</pose>
+    </include>
+    
+    <!-- Include the quadcopter at starting position -->
+    <model name="quadcopter">
+      <pose>0.25 0 0.6 0 0 0</pose>
+      <include>
+        <uri>model://quadcopter</uri>
+      </include>
+    </model>
+  </world>
+</sdf>
